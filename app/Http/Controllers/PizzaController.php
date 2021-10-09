@@ -87,23 +87,4 @@ class PizzaController extends Controller
     public function getPizza(){
         return Pizza::all();
     }
-
-    public function list() {
-        $pizzas = Pizza::all();
-
-        return view('pizza.list',[
-            'pizzas' => $pizzas
-        ]);
-    }
-    public function create() {
-        
-
-        return view('pizza.list',[
-            'pizzas' => $pizzas
-        ]);
-    }
-    public function delete(Request $request) {
-        Pizza::where('id', $request->id)->delete();
-        return redirect()->back();
-    }
 }

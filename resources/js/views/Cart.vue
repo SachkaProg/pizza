@@ -45,7 +45,7 @@
                             {{cart_item.price*cart_item.quantity}} ₽
                         </div>
                         <div class="cart-item__delete-btn">
-                            <svg @click="deleteFromCart(cart_item.id, $event)" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg @click="deleteFromCart(index, $event)" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0.857178 13.7142C0.857178 14.6614 1.62431 15.4285 2.57148 15.4285H9.42865C10.3758 15.4285 11.1429 14.6614 11.1429 13.7142V3.42847H0.857178V13.7142Z" fill="#343435"/>
                                 <path d="M9.00002 0.857131L8.14285 0H3.85715L2.99998 0.857131H0V2.57143H12V0.857131H9.00002Z" fill="#343435"/>
                             </svg>
@@ -101,7 +101,7 @@
 
 
                             <div class="cart-item__delete-btn">
-                                <svg @click="deleteFromCart(cart_item.id, $event)" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg @click="deleteFromCart(index, $event)" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.857178 13.7142C0.857178 14.6614 1.62431 15.4285 2.57148 15.4285H9.42865C10.3758 15.4285 11.1429 14.6614 11.1429 13.7142V3.42847H0.857178V13.7142Z" fill="#343435"/>
                                     <path d="M9.00002 0.857131L8.14285 0H3.85715L2.99998 0.857131H0V2.57143H12V0.857131H9.00002Z" fill="#343435"/>
                                 </svg>
@@ -282,6 +282,7 @@ export default {
     },
     data: () => ({
         sauces: [],
+        sauce: {},
     }),
 
     mounted() {
@@ -370,7 +371,11 @@ export default {
         addToCart(data){
             this.$set(data, 'quantity', 1)
 
-            this.ADD_TO_CART(data);
+            this.sauce.name = data.name;
+            this.sauce.price = Number(data.price);
+            this.sauce.img = data.img;
+            this.sauce.quantity = data.quantity;
+            this.ADD_TO_CART(this.sauce);
 
         },
     },

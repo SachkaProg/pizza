@@ -2097,7 +2097,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //     this.$emit('goodInfo');
     // },
     addToCart: function addToCart() {
-      this.ADD_TO_CART(this.item_data);
+      this.cartItem.name = this.item_data.name;
+      this.cartItem.img = this.item_data.img;
+      this.cartItem.price = Number(this.item_data.price);
+      this.cartItem.quantity = 1;
+      this.ADD_TO_CART(this.cartItem);
+      $(".add-to-cart__success").show('slow');
+      setTimeout(function () {
+        $(".add-to-cart__success").hide('slow');
+        $('body').removeClass('open');
+      }, 2000);
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(['ADD_TO_CART'])),
   props: {
@@ -4508,7 +4517,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      sauces: []
+      sauces: [],
+      sauce: {}
     };
   },
   mounted: function mounted() {
@@ -4589,7 +4599,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     addToCart: function addToCart(data) {
       this.$set(data, 'quantity', 1);
-      this.ADD_TO_CART(data);
+      this.sauce.name = data.name;
+      this.sauce.price = Number(data.price);
+      this.sauce.img = data.img;
+      this.sauce.quantity = data.quantity;
+      this.ADD_TO_CART(this.sauce);
     }
   })
 });
@@ -4737,12 +4751,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_HeaderCart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/HeaderCart.vue */ "./resources/js/components/HeaderCart.vue");
 /* harmony import */ var _components_MainFooter_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MainFooter.vue */ "./resources/js/components/MainFooter.vue");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4887,7 +4899,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-
+//
 
 
 
@@ -4910,19 +4922,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   validations: {
     name: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__.required
     },
     tel: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__.required
     },
     city: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__.required
     },
     street: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__.required
     },
     house: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__.required
     }
   },
   methods: {
@@ -4938,33 +4950,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       setTimeout(function () {
         $(".order__form-input__invalid.checkbox__feedback").hide('slow');
       }, 5000);
-    },
-    makeOrderRequest: function makeOrderRequest() {
-      var _this = this;
-
-      var form = document.forms.order_form;
-      var fd = new FormData(form);
-      fd.set("callback", !fd.get("callback"));
-      fd.set("order", JSON.stringify(this.CART));
-      fd.set("total", this.cartTotalCost);
-      this.$v.$touch();
-
-      if (this.$v.$invalid || this.CART.length == 0) {
-        console.log("invalid form");
-        return;
-      }
-
-      axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/make-order", fd).then(function (res) {
-        res = res.data;
-
-        if (res.status) {
-          _this.$router.push("order-success");
-
-          CART = [];
-        }
-      })["catch"](function (err) {
-        console.log(err);
-      });
     } // setName(value) {
     //   this.name = value
     //   this.$v.name.$touch()
@@ -4987,7 +4972,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // },
 
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)(['CART'])), {}, {
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)(['CART'])), {}, {
     cartTotalCost: function cartTotalCost() {
       var result = [];
 
@@ -11091,7 +11076,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* btns */\n.cart__btns__inner{\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 60px;\n}\n.cart-btn{\n    width: 246px;\n    height: 60px;\n    background: #F3F3F3;\n    border-radius: 20px;\n\n    padding: 20px;\n\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 18px;\n    line-height: 125%;\n    /* identical to box height, or 22px */\n    color: #343435;\n    cursor: pointer;\n}\n.cart-btn.locked-btn{\n    color: #FFFFFF;\n    cursor: default;\n}\n.cart-btn.make-order-btn{\n    color: #FFFFFF;\n    background: #EB5C27;\n    cursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* btns */\n.cart__btns__inner{\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 60px;\n}\n.cart-btn{\n    width: 246px;\n    height: 60px;\n    background: #F3F3F3;\n    border-radius: 20px;\n\n    padding: 20px;\n\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 18px;\n    line-height: 125%;\n    /* identical to box height, or 22px */\n    color: #343435;\n    cursor: pointer;\n}\n.cart-btn.locked-btn{\n    color: #FFFFFF;\n    cursor: default;\n}\n.cart-btn.make-order-btn{\n    color: #FFFFFF;\n    background: #EB5C27;\n    cursor: pointer;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11115,7 +11100,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* cart */\n.cart-list{\n    width: 792px;\n    margin: 0 auto;\n    border-bottom: 1px solid #E2E2E2;\n\n    margin-bottom: 60px;\n}\n.cart-item{\n    width: 100%;\n    padding-top: 15px;\n    margin-bottom: 15px;\n\n    display: flex;\n    align-items: center;\n\n    border-top: 1px solid #E2E2E2;\n}\n\n/* .cart-item:last-child{\n    border-bottom: 1px solid #E2E2E2;\n} */\n.cart-item__img,\n.cart-item__img-img{\n    width: 87px;\n    height: 87px;\n}\n.cart-item__img{\n    margin-right: 20px;\n}\n.cart-item__img-img{\n    display: block;\n}\n.cart-item__content{\n    flex-grow: 1;\n}\n.cart-item__name{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #343435;\n    margin-bottom: 10px;\n}\n.cart-item__desc{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 12px;\n    line-height: 110%;\n    /* or 13px */\n    color: #B0B0B0;\n    max-width: 350px;\n}\n.cart-item__quantity__inner{\n    margin-right: 60px;\n    display: flex;\n    width: 100px;\n    height: 28px;\n    border-radius: 15px;\n    background: #F7F6F6;\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #808080;\n}\n.cart-item__quantity{\n    width: 40px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.cart-item__quantity__decrement,\n.cart-item__quantity__increment{\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    width: 30px;\n    cursor: pointer;\n}\n.cart-item__price{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #343435;\n    margin-right: 69px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* cart */\n.cart-list{\n    width: 792px;\n    margin: 0 auto;\n    border-bottom: 1px solid #E2E2E2;\n\n    margin-bottom: 60px;\n}\n.cart-item{\n    width: 100%;\n    padding-top: 15px;\n    margin-bottom: 15px;\n\n    display: flex;\n    align-items: center;\n\n    border-top: 1px solid #E2E2E2;\n}\n\n/* .cart-item:last-child{\n    border-bottom: 1px solid #E2E2E2;\n} */\n.cart-item__img,\n.cart-item__img-img{\n    width: 87px;\n    height: 87px;\n}\n.cart-item__img{\n    margin-right: 20px;\n}\n.cart-item__img-img{\n    display: block;\n}\n.cart-item__content{\n    flex-grow: 1;\n}\n.cart-item__name{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #343435;\n    margin-bottom: 10px;\n}\n.cart-item__desc{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 12px;\n    line-height: 110%;\n    /* or 13px */\n    color: #B0B0B0;\n    max-width: 350px;\n}\n.cart-item__quantity__inner{\n    margin-right: 60px;\n    display: flex;\n    width: 100px;\n    height: 28px;\n    border-radius: 15px;\n    background: #F7F6F6;\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #808080;\n}\n.cart-item__quantity{\n    width: 40px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.cart-item__quantity__decrement,\n.cart-item__quantity__increment{\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    width: 30px;\n    cursor: pointer;\n}\n.cart-item__price{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: 600;\n    font-size: 16px;\n    line-height: 110%;\n    /* identical to box height, or 18px */\n    color: #343435;\n    margin-right: 69px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11139,7 +11124,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* cart-additives */\n.cart-additives__title{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 24px;\n    line-height: 125%;\n    /* identical to box height, or 30px */\n    color: #343435;\n\n    margin-bottom: 40px;\n}\n.cart-additives__list{\n    display: flex;\n    flex-wrap: wrap;\n}\n.cart-additives__item{\n    width: 120px;\n    height: 160px;\n    border: 1px solid #E2E2E2;\n    box-sizing: border-box;\n    border-radius: 15px;\n\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n\n    margin-right: 20px;\n}\n.cart-additives__item__img{\n    flex-grow: 1;\n    width: 100%;\n    padding: 20px 20px 15px;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.cart-additives__item__img-img{\n    display: block;\n    width: 50px;\n    height: 50px;\n}\n.cart-additives__item__name{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 12px;\n    line-height: 125%;\n    /* identical to box height, or 15px */\n    color: #343435;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    margin-bottom: 20px;\n}\n.cart-additives__item__price{\n    width: 70px;\n    height: 30px;\n    background: rgba(235, 92, 39, 0.1);\n    border-radius: 17px;\n\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 14px;\n    line-height: 125%;\n    /* identical to box height, or 17px */\n    color: #FF6900;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    margin-bottom: 10px;\n    cursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* cart-additives */\n.cart-additives__title{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 24px;\n    line-height: 125%;\n    /* identical to box height, or 30px */\n    color: #343435;\n\n    margin-bottom: 40px;\n}\n.cart-additives__list{\n    display: flex;\n    flex-wrap: wrap;\n}\n.cart-additives__item{\n    width: 120px;\n    height: 160px;\n    border: 1px solid #E2E2E2;\n    box-sizing: border-box;\n    border-radius: 15px;\n\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n\n    margin-right: 20px;\n}\n.cart-additives__item__img{\n    flex-grow: 1;\n    width: 100%;\n    padding: 20px 20px 15px;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.cart-additives__item__img-img{\n    display: block;\n    width: 50px;\n    height: 50px;\n}\n.cart-additives__item__name{\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 12px;\n    line-height: 125%;\n    /* identical to box height, or 15px */\n    color: #343435;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    margin-bottom: 20px;\n}\n.cart-additives__item__price{\n    width: 70px;\n    height: 30px;\n    background: rgba(235, 92, 39, 0.1);\n    border-radius: 17px;\n\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 14px;\n    line-height: 125%;\n    /* identical to box height, or 17px */\n    color: #FF6900;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    margin-bottom: 10px;\n    cursor: pointer;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11283,7 +11268,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* order-form */\n.order__form{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.order__form__main-row{\n    margin-bottom: 40px;\n    display: flex;\n    align-items: center;\n}\n.order__form__sub-row{\n    margin-bottom: 20px;\n    display: flex;\n    flex-wrap: wrap;\n}\n.order__form input{\n    width: 249px;\n    height: 41px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    margin-bottom: 20px;\n    margin-right: 16px;\n\n    padding: 9px 15px;\n\n    border: none;\n}\n.order__form textarea{\n    width: 793px;\n    height: 145px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    padding: 15px;\n\n    border: none;\n    resize: none;\n    margin-bottom: 40px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* order-form */\n.order__form{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.order__form__main-row{\n    margin-bottom: 40px;\n    display: flex;\n    align-items: center;\n}\n.order__form__sub-row{\n    margin-bottom: 20px;\n    display: flex;\n    flex-wrap: wrap;\n}\n.order__form input{\n    width: 249px;\n    height: 41px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    margin-bottom: 20px;\n    margin-right: 16px;\n\n    padding: 9px 15px;\n\n    border: none;\n}\n.order__form textarea{\n    width: 793px;\n    height: 145px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    padding: 15px;\n\n    border: none;\n    resize: none;\n    margin-bottom: 40px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -50552,19 +50537,17 @@ var render = function() {
                     on: { change: _vm.handleFileUpload }
                   }),
                   _vm._v(" "),
-                  _c("button", [
-                    _c(
-                      "div",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.createPizza()
-                          }
+                  _c(
+                    "div",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.createPizza()
                         }
-                      },
-                      [_vm._v("сделать")]
-                    )
-                  ])
+                      }
+                    },
+                    [_vm._v("сделать")]
+                  )
                 ],
                 2
               )
@@ -50803,7 +50786,7 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                return _vm.deleteFromCart(cart_item.id, $event)
+                                return _vm.deleteFromCart(index, $event)
                               }
                             }
                           },
@@ -50994,10 +50977,7 @@ var render = function() {
                                     },
                                     on: {
                                       click: function($event) {
-                                        return _vm.deleteFromCart(
-                                          cart_item.id,
-                                          $event
-                                        )
+                                        return _vm.deleteFromCart(index, $event)
                                       }
                                     }
                                   },
@@ -51392,335 +51372,315 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c(
-            "form",
-            { staticClass: "order__form", attrs: { name: "order_form" } },
-            [
-              _c("div", { staticClass: "order__form__main-row" }, [
-                _c("div", { staticClass: "order__form-input__inner" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.trim",
-                        value: _vm.$v.name.$model,
-                        expression: "$v.name.$model",
-                        modifiers: { trim: true }
-                      }
-                    ],
-                    class: { "input-invalid": _vm.$v.name.$error },
-                    attrs: { type: "text", name: "name", placeholder: "Имя*" },
-                    domProps: { value: _vm.$v.name.$model },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.$v.name,
-                          "$model",
-                          $event.target.value.trim()
-                        )
-                      },
-                      blur: function($event) {
-                        return _vm.$forceUpdate()
-                      }
+          _c("form", { staticClass: "order__form" }, [
+            _c("div", { staticClass: "order__form__main-row" }, [
+              _c("div", { staticClass: "order__form-input__inner" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model.trim",
+                      value: _vm.$v.name.$model,
+                      expression: "$v.name.$model",
+                      modifiers: { trim: true }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.$v.name.$error
-                    ? _c("div", { staticClass: "order__form-input__invalid" }, [
-                        _c(
-                          "div",
-                          { staticClass: "order__form-input__invalid__text" },
-                          [
-                            _vm._v(
-                              "\n                                Пожалуйста заполните это поле\n                            "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          staticClass: "order__form-input__invalid__triangle",
-                          attrs: { src: "/images/triangle-black.png", alt: "" }
-                        })
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "order__form-input__inner" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.trim",
-                        value: _vm.$v.tel.$model,
-                        expression: "$v.tel.$model",
-                        modifiers: { trim: true }
+                  ],
+                  class: { "input-invalid": _vm.$v.name.$error },
+                  attrs: { type: "text", name: "name", placeholder: "Имя*" },
+                  domProps: { value: _vm.$v.name.$model },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
                       }
-                    ],
-                    class: { "input-invalid": _vm.$v.tel.$error },
-                    attrs: {
-                      type: "phone",
-                      name: "phone",
-                      placeholder: "Номер телефона*"
+                      _vm.$set(
+                        _vm.$v.name,
+                        "$model",
+                        $event.target.value.trim()
+                      )
                     },
-                    domProps: { value: _vm.$v.tel.$model },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.$v.tel,
-                          "$model",
-                          $event.target.value.trim()
-                        )
-                      },
-                      blur: function($event) {
-                        return _vm.$forceUpdate()
-                      }
+                    blur: function($event) {
+                      return _vm.$forceUpdate()
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.$v.tel.$error
-                    ? _c("div", { staticClass: "order__form-input__invalid" }, [
-                        _c(
-                          "div",
-                          { staticClass: "order__form-input__invalid__text" },
-                          [
-                            _vm._v(
-                              "\n                                Пожалуйста заполните это поле\n                            "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          staticClass: "order__form-input__invalid__triangle",
-                          attrs: { src: "/images/triangle-black.png", alt: "" }
-                        })
-                      ])
-                    : _vm._e()
-                ])
+                  }
+                }),
+                _vm._v(" "),
+                _vm.$v.name.$error
+                  ? _c("div", { staticClass: "order__form-input__invalid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "order__form-input__invalid__text" },
+                        [
+                          _vm._v(
+                            "\n                                Пожалуйста заполните это поле\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "order__form-input__invalid__triangle",
+                        attrs: { src: "/images/triangle-black.png", alt: "" }
+                      })
+                    ])
+                  : _vm._e()
               ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "order__form__sub-row" }, [
-                _c("div", { staticClass: "order__form-input__inner" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.trim",
-                        value: _vm.$v.city.$model,
-                        expression: "$v.city.$model",
-                        modifiers: { trim: true }
-                      }
-                    ],
-                    class: { "input-invalid": _vm.$v.city.$error },
-                    attrs: {
-                      type: "text",
-                      name: "city",
-                      placeholder: "Город*"
-                    },
-                    domProps: { value: _vm.$v.city.$model },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.$v.city,
-                          "$model",
-                          $event.target.value.trim()
-                        )
-                      },
-                      blur: function($event) {
-                        return _vm.$forceUpdate()
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.$v.city.$error
-                    ? _c("div", { staticClass: "order__form-input__invalid" }, [
-                        _c(
-                          "div",
-                          { staticClass: "order__form-input__invalid__text" },
-                          [
-                            _vm._v(
-                              "\n                                Пожалуйста заполните это поле\n                            "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          staticClass: "order__form-input__invalid__triangle",
-                          attrs: { src: "/images/triangle-black.png", alt: "" }
-                        })
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "order__form-input__inner" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.trim",
-                        value: _vm.$v.street.$model,
-                        expression: "$v.street.$model",
-                        modifiers: { trim: true }
-                      }
-                    ],
-                    class: { "input-invalid": _vm.$v.street.$error },
-                    attrs: {
-                      type: "text",
-                      name: "street",
-                      placeholder: "Улица*"
-                    },
-                    domProps: { value: _vm.$v.street.$model },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.$v.street,
-                          "$model",
-                          $event.target.value.trim()
-                        )
-                      },
-                      blur: function($event) {
-                        return _vm.$forceUpdate()
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.$v.street.$error
-                    ? _c("div", { staticClass: "order__form-input__invalid" }, [
-                        _c(
-                          "div",
-                          { staticClass: "order__form-input__invalid__text" },
-                          [
-                            _vm._v(
-                              "\n                                Пожалуйста заполните это поле\n                            "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          staticClass: "order__form-input__invalid__triangle",
-                          attrs: { src: "/images/triangle-black.png", alt: "" }
-                        })
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "order__form-input__inner" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.trim",
-                        value: _vm.$v.house.$model,
-                        expression: "$v.house.$model",
-                        modifiers: { trim: true }
-                      }
-                    ],
-                    class: { "input-invalid": _vm.$v.house.$error },
-                    attrs: { type: "text", name: "house", placeholder: "Дом*" },
-                    domProps: { value: _vm.$v.house.$model },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.$v.house,
-                          "$model",
-                          $event.target.value.trim()
-                        )
-                      },
-                      blur: function($event) {
-                        return _vm.$forceUpdate()
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.$v.house.$error
-                    ? _c("div", { staticClass: "order__form-input__invalid" }, [
-                        _c(
-                          "div",
-                          { staticClass: "order__form-input__invalid__text" },
-                          [
-                            _vm._v(
-                              "\n                                Пожалуйста заполните это поле\n                            "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          staticClass: "order__form-input__invalid__triangle",
-                          attrs: { src: "/images/triangle-black.png", alt: "" }
-                        })
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "text",
-                    name: "apartment",
-                    placeholder: "Квартира"
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "text", name: "floor", placeholder: "Этаж" }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "text",
-                    name: "intercom",
-                    placeholder: "Домофон"
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "text", name: "korpus", placeholder: "Корпус" }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "text",
-                    name: "entrace",
-                    placeholder: "Подьезд"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("textarea", {
-                attrs: { name: "comment", placeholder: "Оставить комментарий" }
-              }),
               _vm._v(" "),
               _c("div", { staticClass: "order__form-input__inner" }, [
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model.trim",
+                      value: _vm.$v.tel.$model,
+                      expression: "$v.tel.$model",
+                      modifiers: { trim: true }
+                    }
+                  ],
+                  class: { "input-invalid": _vm.$v.tel.$error },
                   attrs: {
-                    type: "checkbox",
-                    name: "callback",
-                    id: "checkbox-id"
+                    type: "phone",
+                    name: "phone",
+                    placeholder: "Номер телефона*"
                   },
-                  on: { click: _vm.checkboxMessage }
+                  domProps: { value: _vm.$v.tel.$model },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.$v.tel, "$model", $event.target.value.trim())
+                    },
+                    blur: function($event) {
+                      return _vm.$forceUpdate()
+                    }
+                  }
                 }),
                 _vm._v(" "),
-                _c("label", { attrs: { for: "checkbox-id" } }, [
-                  _vm._v("Не перезванивать")
-                ]),
-                _vm._v(" "),
-                _vm._m(0)
+                _vm.$v.tel.$error
+                  ? _c("div", { staticClass: "order__form-input__invalid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "order__form-input__invalid__text" },
+                        [
+                          _vm._v(
+                            "\n                                Пожалуйста заполните это поле\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "order__form-input__invalid__triangle",
+                        attrs: { src: "/images/triangle-black.png", alt: "" }
+                      })
+                    ])
+                  : _vm._e()
               ])
-            ]
-          )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "order__form__sub-row" }, [
+              _c("div", { staticClass: "order__form-input__inner" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model.trim",
+                      value: _vm.$v.city.$model,
+                      expression: "$v.city.$model",
+                      modifiers: { trim: true }
+                    }
+                  ],
+                  class: { "input-invalid": _vm.$v.city.$error },
+                  attrs: { type: "text", name: "city", placeholder: "Город*" },
+                  domProps: { value: _vm.$v.city.$model },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.$v.city,
+                        "$model",
+                        $event.target.value.trim()
+                      )
+                    },
+                    blur: function($event) {
+                      return _vm.$forceUpdate()
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.$v.city.$error
+                  ? _c("div", { staticClass: "order__form-input__invalid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "order__form-input__invalid__text" },
+                        [
+                          _vm._v(
+                            "\n                                Пожалуйста заполните это поле\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "order__form-input__invalid__triangle",
+                        attrs: { src: "/images/triangle-black.png", alt: "" }
+                      })
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "order__form-input__inner" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model.trim",
+                      value: _vm.$v.street.$model,
+                      expression: "$v.street.$model",
+                      modifiers: { trim: true }
+                    }
+                  ],
+                  class: { "input-invalid": _vm.$v.street.$error },
+                  attrs: {
+                    type: "text",
+                    name: "street",
+                    placeholder: "Улица*"
+                  },
+                  domProps: { value: _vm.$v.street.$model },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.$v.street,
+                        "$model",
+                        $event.target.value.trim()
+                      )
+                    },
+                    blur: function($event) {
+                      return _vm.$forceUpdate()
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.$v.street.$error
+                  ? _c("div", { staticClass: "order__form-input__invalid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "order__form-input__invalid__text" },
+                        [
+                          _vm._v(
+                            "\n                                Пожалуйста заполните это поле\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "order__form-input__invalid__triangle",
+                        attrs: { src: "/images/triangle-black.png", alt: "" }
+                      })
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "order__form-input__inner" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model.trim",
+                      value: _vm.$v.house.$model,
+                      expression: "$v.house.$model",
+                      modifiers: { trim: true }
+                    }
+                  ],
+                  class: { "input-invalid": _vm.$v.house.$error },
+                  attrs: { type: "text", name: "house", placeholder: "Дом*" },
+                  domProps: { value: _vm.$v.house.$model },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.$v.house,
+                        "$model",
+                        $event.target.value.trim()
+                      )
+                    },
+                    blur: function($event) {
+                      return _vm.$forceUpdate()
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.$v.house.$error
+                  ? _c("div", { staticClass: "order__form-input__invalid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "order__form-input__invalid__text" },
+                        [
+                          _vm._v(
+                            "\n                                Пожалуйста заполните это поле\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "order__form-input__invalid__triangle",
+                        attrs: { src: "/images/triangle-black.png", alt: "" }
+                      })
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  type: "text",
+                  name: "apartment",
+                  placeholder: "Квартира"
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "text", name: "floor", placeholder: "Этаж" }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  type: "text",
+                  name: "intercom",
+                  placeholder: "Домофон"
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "text", name: "korpus", placeholder: "Корпус" }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "text", name: "entrace", placeholder: "Подьезд" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              attrs: { name: "comment", placeholder: "Оставить комментарий" }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "order__form-input__inner" }, [
+              _c("input", {
+                attrs: { type: "checkbox", id: "checkbox-id" },
+                on: { click: _vm.checkboxMessage }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "checkbox-id" } }, [
+                _vm._v("Не перезванивать")
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -51753,11 +51713,10 @@ var render = function() {
             ),
             _vm._v(" "),
             _c(
-              "a",
+              "router-link",
               {
                 staticClass: "cart-btn make-order-btn",
-                attrs: { to: "order-success" },
-                on: { click: _vm.makeOrderRequest }
+                attrs: { to: "order-success" }
               },
               [
                 _vm._v("\n                Заказать\n                "),

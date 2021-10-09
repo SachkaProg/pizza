@@ -47,7 +47,7 @@
                     <input v-model="pizzaPrice" type="text" name="price" placeholder="Цена">
                     <input @change="handleFileUpload" ref="file" type="file">
 
-                    <button><div @click="createPizza()" >сделать</div></button>
+                    <div @click="createPizza()" >сделать</div>
                 </form>
 
             </div>

@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin',[App\Http\Controllers\PizzaController::class, 'list']);
-Route::get('/admin-create',[App\Http\Controllers\PizzaController::class, 'create']);
-Route::get('/admin-delete/{id}',[App\Http\Controllers\PizzaController::class, 'delete'])->name('delete');
+// Route::get('/', function () {
+//     return view('index');
+// });
 
 Route::get('/{any}', function(){
     return view('index');

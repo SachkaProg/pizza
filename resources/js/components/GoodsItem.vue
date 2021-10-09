@@ -52,7 +52,16 @@ export default {
         // },
 
         addToCart(){
-            this.ADD_TO_CART(this.item_data);
+            this.cartItem.name = this.item_data.name;
+            this.cartItem.img = this.item_data.img;
+            this.cartItem.price = Number(this.item_data.price);
+            this.cartItem.quantity = 1;
+            this.ADD_TO_CART(this.cartItem);
+            $(".add-to-cart__success").show('slow');
+            setTimeout(function() {
+                $(".add-to-cart__success").hide('slow');
+                $('body').removeClass('open');
+            }, 2000);
         },
         ...mapActions([
             'ADD_TO_CART'
