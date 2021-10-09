@@ -90,7 +90,7 @@ export default {
     }
     .nav-mob{
         padding-top: 25px;
-        margin-bottom: 25px;
+        padding-bottom: 25px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -98,6 +98,10 @@ export default {
         -ms-overflow-style:none;
         scrollbar-width: 0;
         padding-left: 15px;
+
+        position: fixed;
+        top: 0;
+        background: #fff;
     }
     .nav-mob__item{
         font-family: Montserrat;

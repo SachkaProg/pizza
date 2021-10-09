@@ -113,6 +113,12 @@ export default {
 </script>
 
 <style>
+    .main{
+        padding-top: 57px;
+    }
+</style>
+
+<style>
     @media(max-width: 940px) {
         .main-nav{
             display: none;

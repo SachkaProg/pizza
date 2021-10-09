@@ -123,6 +123,14 @@ export default {
 </script>
 
 <style>
+    .main-nav{
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 10000;
+        background: #fff;
+    }
+
     .main-nav__item{
         position: relative;
     }

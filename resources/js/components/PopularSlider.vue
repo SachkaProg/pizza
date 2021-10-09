@@ -175,6 +175,12 @@ export default {
 </script>
 
 <style>
+    .slick-current {
+        filter: none;
+    }
+</style>
+
+<style>
     .popular-slider__item__discount--new{
         width: 35px;
         height: 15px;
