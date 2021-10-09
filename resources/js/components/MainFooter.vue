@@ -8,7 +8,8 @@
                 <div class="footer__content">
 
                     <div class="footer__content__img">
-                        <img src="/images/footer-img.png" alt="" class="footer__content__img-img">
+                        <a href="https://goo.gl/maps/Bn6AYAQ1Y612ygGc9" target="_blank"><img src="/images/footer-img.png" alt="" class="footer__content__img-img"></a>
+
                     </div>
 
                     <div class="footer__content__text">
@@ -17,8 +18,11 @@
                             <span class="span-orange">№1 в Донецке</span>
                         </div>
                         <div class="footer-block">
-                            <span>г. Донецк</span>
-                            <span>ул. Университетская 101В</span>
+                            <a href="https://goo.gl/maps/Bn6AYAQ1Y612ygGc9" target="_blank">
+                                <span>г. Донецк</span> <br>
+                                <span>ул. Университетская 101В</span>
+                            </a>
+
                         </div>
                         <div class="footer-block">
                             <span>Телефон доставки</span>

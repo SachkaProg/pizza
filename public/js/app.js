@@ -2444,6 +2444,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MainFooter'
 });
@@ -48625,10 +48629,21 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "footer__content" }, [
       _c("div", { staticClass: "footer__content__img" }, [
-        _c("img", {
-          staticClass: "footer__content__img-img",
-          attrs: { src: "/images/footer-img.png", alt: "" }
-        })
+        _c(
+          "a",
+          {
+            attrs: {
+              href: "https://goo.gl/maps/Bn6AYAQ1Y612ygGc9",
+              target: "_blank"
+            }
+          },
+          [
+            _c("img", {
+              staticClass: "footer__content__img-img",
+              attrs: { src: "/images/footer-img.png", alt: "" }
+            })
+          ]
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "footer__content__text" }, [
@@ -48639,9 +48654,22 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "footer-block" }, [
-          _c("span", [_vm._v("г. Донецк")]),
-          _vm._v(" "),
-          _c("span", [_vm._v("ул. Университетская 101В")])
+          _c(
+            "a",
+            {
+              attrs: {
+                href: "https://goo.gl/maps/Bn6AYAQ1Y612ygGc9",
+                target: "_blank"
+              }
+            },
+            [
+              _c("span", [_vm._v("г. Донецк")]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("span", [_vm._v("ул. Университетская 101В")])
+            ]
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "footer-block" }, [
