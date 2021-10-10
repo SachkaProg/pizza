@@ -2,30 +2,30 @@
     <div class="nav-mobile">
         <div class="container">
             <div class="nav-mob">
-                <div class="nav-mob__item"  @click="toggleActive">
-                    Новинки
+                <div class="nav-mob__item" v-for="category in categories"  @click="toggleActive">
+                    {{category.name}}
                 </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Пицца
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Комбо
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Закуски
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Десерты
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Напитки
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Другие товары
-                </div>
-                <div class="nav-mob__item" @click="toggleActive">
-                    Акции
-                </div>
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Пицца-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Комбо-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Закуски-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Десерты-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Напитки-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Другие товары-->
+<!--                </div>-->
+<!--                <div class="nav-mob__item" @click="toggleActive">-->
+<!--                    Акции-->
+<!--                </div>-->
                 <a href="footer" class="nav-mob__item" @click="scrollAnch($event)">
                     Контакты
                 </a>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "NavMobile",
     data: () => ({
@@ -47,6 +49,9 @@ export default {
         category: 'Новинки',
 
     }),
+    mounted() {
+        this.loadCategories()
+    },
     methods: {
         toggleActive: function(event){
             let matches = document.querySelectorAll('.nav-mob__item');
@@ -75,7 +80,21 @@ export default {
             $('body,html').animate({scrollTop: myEl.offsetTop - 80}, 1500);
             $(myId).fadeIn(1800);
 
-        }
+        },
+
+        loadCategories() {
+
+            axios.get('api/get-categories', {
+                headers: {
+                    "Content-type": "multi-part/form-data"
+                    // "Content-type": "application/json"
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                    this.categories = res.data;
+                })
+        },
     }
 
 }

@@ -2466,6 +2466,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _CartPopUp_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CartPopUp.vue */ "./resources/js/components/CartPopUp.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
 //
 //
 //
@@ -2543,6 +2547,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MainNav',
   components: {
@@ -2553,6 +2558,9 @@ __webpack_require__.r(__webpack_exports__);
       categories: [],
       category: 'Новинки'
     };
+  },
+  mounted: function mounted() {
+    this.loadCategories();
   },
   methods: {
     toggleActive: function toggleActive(event) {
@@ -2582,6 +2590,19 @@ __webpack_require__.r(__webpack_exports__);
         scrollTop: myEl.offsetTop - 80
       }, 1500);
       $(myId).fadeIn(1800);
+    },
+    loadCategories: function loadCategories() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/get-categories', {
+        headers: {
+          "Content-type": "multi-part/form-data" // "Content-type": "application/json"
+
+        }
+      }).then(function (res) {
+        console.log(res.data);
+        _this.categories = res.data;
+      });
     }
   }
 });
@@ -2655,6 +2676,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2696,6 +2719,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "NavMobile",
   data: function data() {
@@ -2703,6 +2727,9 @@ __webpack_require__.r(__webpack_exports__);
       categories: [],
       category: 'Новинки'
     };
+  },
+  mounted: function mounted() {
+    this.loadCategories();
   },
   methods: {
     toggleActive: function toggleActive(event) {
@@ -2732,6 +2759,19 @@ __webpack_require__.r(__webpack_exports__);
         scrollTop: myEl.offsetTop - 80
       }, 1500);
       $(myId).fadeIn(1800);
+    },
+    loadCategories: function loadCategories() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('api/get-categories', {
+        headers: {
+          "Content-type": "multi-part/form-data" // "Content-type": "application/json"
+
+        }
+      }).then(function (res) {
+        console.log(res.data);
+        _this.categories = res.data;
+      });
     }
   }
 });
@@ -48743,201 +48783,84 @@ var render = function() {
         "div",
         { staticClass: "main-nav__inner" },
         [
-          _c("ul", { staticClass: "main-nav__list" }, [
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Новинки\n                    "
-                  )
-                ]
-              ),
+          _c(
+            "ul",
+            { staticClass: "main-nav__list" },
+            [
+              _vm._l(_vm.categories, function(category) {
+                return _c("li", { staticClass: "main-nav__item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "main-nav__item-link",
+                      attrs: { href: "#" },
+                      on: { click: _vm.toggleActive }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(category.name) +
+                          "\n                        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "item-link__circle" })
+                ])
+              }),
               _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Пицца\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Комбо\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Закуски\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Десерты\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Напитки\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Другие товары\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "#" },
-                  on: { click: _vm.toggleActive }
-                },
-                [
-                  _vm._v(
-                    "\n                        Акции\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "footer" },
-                  on: {
-                    click: function($event) {
-                      return _vm.scrollAnch($event)
+              _c("li", { staticClass: "main-nav__item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "main-nav__item-link",
+                    attrs: { href: "footer" },
+                    on: {
+                      click: function($event) {
+                        return _vm.scrollAnch($event)
+                      }
                     }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                        Контакты\n                    "
-                  )
-                ]
-              ),
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Контакты\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "item-link__circle" })
+              ]),
               _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "main-nav__item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "main-nav__item-link",
-                  attrs: { href: "footer" },
-                  on: {
-                    click: function($event) {
-                      return _vm.scrollAnch($event)
+              _c("li", { staticClass: "main-nav__item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "main-nav__item-link",
+                    attrs: { href: "footer" },
+                    on: {
+                      click: function($event) {
+                        return _vm.scrollAnch($event)
+                      }
                     }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                        О нас\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "item-link__circle" })
-            ])
-          ]),
+                  },
+                  [
+                    _vm._v(
+                      "\n                            О нас\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "item-link__circle" })
+              ])
+            ],
+            2
+          ),
           _vm._v(" "),
           _c(
             "router-link",
             { staticClass: "main-nav__cart", attrs: { to: "cart" } },
             [
-              _vm._v("\n                Корзина\n                "),
+              _vm._v("\n                    Корзина\n                    "),
               _c("CartPopUp")
             ],
             1
@@ -49058,83 +48981,54 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "nav-mobile" }, [
     _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "nav-mob" }, [
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Новинки\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Пицца\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Комбо\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Закуски\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Десерты\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Напитки\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Другие товары\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
-          [_vm._v("\n                Акции\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "nav-mob__item",
-            attrs: { href: "footer" },
-            on: {
-              click: function($event) {
-                return _vm.scrollAnch($event)
+      _c(
+        "div",
+        { staticClass: "nav-mob" },
+        [
+          _vm._l(_vm.categories, function(category) {
+            return _c(
+              "div",
+              { staticClass: "nav-mob__item", on: { click: _vm.toggleActive } },
+              [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(category.name) +
+                    "\n                "
+                )
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-mob__item",
+              attrs: { href: "footer" },
+              on: {
+                click: function($event) {
+                  return _vm.scrollAnch($event)
+                }
               }
-            }
-          },
-          [_vm._v("\n                Контакты\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "nav-mob__item",
-            attrs: { href: "footer" },
-            on: {
-              click: function($event) {
-                return _vm.scrollAnch($event)
+            },
+            [_vm._v("\n                    Контакты\n                ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-mob__item",
+              attrs: { href: "footer" },
+              on: {
+                click: function($event) {
+                  return _vm.scrollAnch($event)
+                }
               }
-            }
-          },
-          [_vm._v("\n                О нас\n            ")]
-        )
-      ])
+            },
+            [_vm._v("\n                    О нас\n                ")]
+          )
+        ],
+        2
+      )
     ])
   ])
 }

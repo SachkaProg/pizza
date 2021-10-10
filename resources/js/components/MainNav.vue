@@ -3,54 +3,56 @@
         <div class="container">
             <div class="main-nav__inner">
                 <ul class="main-nav__list">
-                    <li class="main-nav__item">
+
+                    <li class="main-nav__item" v-for="category in categories">
                         <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Новинки
+                            {{category.name}}
                         </a>
                         <span class="item-link__circle"></span>
                     </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Пицца
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Комбо
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Закуски
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Десерты
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Напитки
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Другие товары
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
-                    <li class="main-nav__item">
-                        <a href="#" class="main-nav__item-link"  @click="toggleActive">
-                            Акции
-                        </a>
-                        <span class="item-link__circle"></span>
-                    </li>
+
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Пицца-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Комбо-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Закуски-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Десерты-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Напитки-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Другие товары-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
+<!--                    <li class="main-nav__item">-->
+<!--                        <a href="#" class="main-nav__item-link"  @click="toggleActive">-->
+<!--                            Акции-->
+<!--                        </a>-->
+<!--                        <span class="item-link__circle"></span>-->
+<!--                    </li>-->
                     <li class="main-nav__item">
                         <a href="footer" class="main-nav__item-link" @click="scrollAnch($event)">
                             Контакты
@@ -76,6 +78,7 @@
 
 <script>
 import CartPopUp from './CartPopUp.vue'
+import axios from "axios";
 
 export default {
     name: 'MainNav',
@@ -87,6 +90,9 @@ export default {
         category: 'Новинки',
 
     }),
+    mounted() {
+        this.loadCategories()
+    },
     methods: {
         toggleActive: function(event){
             let matches = document.querySelectorAll('.main-nav__item-link');
@@ -116,7 +122,21 @@ export default {
             $('body,html').animate({scrollTop: myEl.offsetTop - 80}, 1500);
             $(myId).fadeIn(1800);
 
-        }
+        },
+
+        loadCategories() {
+
+            axios.get('api/get-categories', {
+                headers: {
+                    "Content-type": "multi-part/form-data"
+                    // "Content-type": "application/json"
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                    this.categories = res.data;
+                })
+        },
     }
 
 }

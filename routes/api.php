@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\AdditionController;
 use App\Http\Controllers\GoodsController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +24,7 @@ use App\Http\Controllers\GoodsController;
 Route::post('/create-pizza', 'App\Http\Controllers\PizzaController@createPizza');
 
 Route::get('/get-pizza', 'App\Http\Controllers\PizzaController@getPizza');
+Route::get('/get-categories', 'App\Http\Controllers\CategoryController@getCategories');
 
 Route::post('/get-goods', 'App\Http\Controllers\GoodsController@getGoods');
 
