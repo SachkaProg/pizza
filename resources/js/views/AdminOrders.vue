@@ -88,9 +88,8 @@
 
      <!------------------------------------------------------------------>
       <!------------------------------------------------------------------>
-
-      <div class="order-table__wrap">
-            <div  @click="slideTable(2)" class="order-table__heading completed">
+    <div class="order-table__wrap">
+            <div @click="slideTable(2)" class="order-table__heading completed">
                 <span>ЗАВЕРШЁННЫЕ</span><img ref='a2' src="/images/arrow-black.png" alt="РАЗВЕРНУТЬ/СВЕРНУТЬ">
             </div>
             <div ref="tc2" class="order-table__container">
@@ -98,11 +97,11 @@
                     <thead>
 		                <tr>
                             <th></th>
-		    	            <th>ЗАКАЗ</th>
+		    	            <th>КОРЗИНА</th>
 		    	            <th>СТАТУС</th>
-		    	            <!-- <th>EMAIL</th> -->
-		    	            <th>ДОСТАВКА</th>
-		    	            <!-- <th>ПЛАТЁЖ</th> -->
+                            <th>КОНТАКТНЫЕ ДАННЫЕ</th>
+		    	            <th>АДРЕС ДОСТАВКИ</th>
+                            <th>КОММЕНТАРИЙ</th>
 		    	            <th>СОЗДАН</th>
 		                </tr>
 	                </thead>
@@ -119,20 +118,49 @@
                                         <div class="cart__quantity">
                                             Кол-во: {{item.quantity}}
                                         </div>
+
+                                        <div v-if="item.composition" class="composition-wrap">
+                                            <div class="composition-header">Состав</div>
+                                            <div class="composition">
+                                                <span v-for="i in item.composition" :key="i">{{i}} </span>
+                                            </div>
+                                        </div>
+                                        <div v-if="item.additions" class="additions-wrap">
+                                            <div class="additions-header">Добавки</div>
+                                            <div v-for="a in item.additions" :key="a.id" class="addition">
+                                                <div class="addition-name">Название: {{a.name}}</div>
+                                                <div class="addition-price">Цена: {{a.price}} руб</div>
+                                                <div class="addition-quantity">Кол-во: {{a.quantity}}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="cart__price">
-                                        ${{item.price}}
+                                        {{item.price}} руб.
                                     </div>
                                 </div>
-                                <div class="cart__total-price">Итого: ${{cartTotalCost(o.order)}}</div>
+                                <div class="cart__total-price">Итого: {{cartTotalCost(o.order)}} руб.</div>
                             </div></td>
 	              	    	<td><div class='td-wrap' @click='showStatusModal(o.id)'>
                                   <span>{{interpritStatus(o.status)}}</span>
                                   <img :ref="'edit_status'+o.id" src="/images/edit_icon-black.png" alt="Редактировать" class="edit-status">
                             </div></td>
-	              	    	<!-- <td><div class='td-wrap'>{{o.email}}</div></td> -->
-	              	    	<td><div class='td-wrap'>{{o.name }}<br><br>{{ o.phone}}</div></td>
-	              	    	<!-- <td><div class='td-wrap'>{{o.billing_name }}<br>{{ o.billing_address }}<br>{{ o.billing_phone}}</div></td> -->
+	              	    	<td><div class='td-wrap'>
+                                  Имя: {{o.name}}<br>
+                                  Телефон: {{o.phone}}<br>
+                                  Перезвонить: {{ (o.callback==1) ? "Да": "Нет"}}
+                            </div></td>
+                            <td><div class='td-wrap'>
+                                  Город: {{o.name}}<br>
+                                  Дом: {{o.phone}}<br>
+                                  <div v-if="o.apartment">Квартира: {{o.apartment}}</div>
+                                  <div v-if="o.floor">Этаж: {{o.floor}}</div>
+                                  <div v-if="o.intercom">Домофон: {{o.intercom}}</div>
+                                  <div v-if="o.korpus">Корпус: {{o.korpus}}</div>
+                                  <div v-if="o.entrance">Подъезд: {{o.entrance}}</div>
+                            </div></td>
+                            <td><div class='td-wrap'>
+                                  {{o.comment}}
+                            </div></td>
 	              	    	<td><div class='td-wrap'>{{o.created_at}}</div></td>
 	              	    </tr>
 	                </tbody>
@@ -140,13 +168,15 @@
             </div>
       </div>
 
-      <!------------------------------------------------------------------>
-      <!------------------------------------------------------------------>
+
 
       <!------------------------------------------------------------------>
       <!------------------------------------------------------------------>
 
-      <div class="order-table__wrap">
+      <!------------------------------------------------------------------>
+      <!------------------------------------------------------------------>
+
+            <div class="order-table__wrap">
             <div @click="slideTable(3)" class="order-table__heading rejected">
                 <span>ОТКЛОНЁННЫЕ</span><img ref='a3' src="/images/arrow-black.png" alt="РАЗВЕРНУТЬ/СВЕРНУТЬ">
             </div>
@@ -155,11 +185,11 @@
                     <thead>
 		                <tr>
                             <th></th>
-		    	            <th>ЗАКАЗ</th>
+		    	            <th>КОРЗИНА</th>
 		    	            <th>СТАТУС</th>
-		    	            <th>EMAIL</th>
-		    	            <th>ДОСТАВКА</th>
-		    	            <th>ПЛАТЁЖ</th>
+                            <th>КОНТАКТНЫЕ ДАННЫЕ</th>
+		    	            <th>АДРЕС ДОСТАВКИ</th>
+                            <th>КОММЕНТАРИЙ</th>
 		    	            <th>СОЗДАН</th>
 		                </tr>
 	                </thead>
@@ -176,26 +206,56 @@
                                         <div class="cart__quantity">
                                             Кол-во: {{item.quantity}}
                                         </div>
+
+                                        <div v-if="item.composition" class="composition-wrap">
+                                            <div class="composition-header">Состав</div>
+                                            <div class="composition">
+                                                <span v-for="i in item.composition" :key="i">{{i}} </span>
+                                            </div>
+                                        </div>
+                                        <div v-if="item.additions" class="additions-wrap">
+                                            <div class="additions-header">Добавки</div>
+                                            <div v-for="a in item.additions" :key="a.id" class="addition">
+                                                <div class="addition-name">Название: {{a.name}}</div>
+                                                <div class="addition-price">Цена: {{a.price}} руб</div>
+                                                <div class="addition-quantity">Кол-во: {{a.quantity}}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="cart__price">
-                                        ${{item.price}}
+                                        {{item.price}} руб.
                                     </div>
                                 </div>
-                                <div class="cart__total-price">Итого: ${{cartTotalCost(o.order)}}</div>
+                                <div class="cart__total-price">Итого: {{cartTotalCost(o.order)}} руб.</div>
                             </div></td>
 	              	    	<td><div class='td-wrap' @click='showStatusModal(o.id)'>
                                   <span>{{interpritStatus(o.status)}}</span>
                                   <img :ref="'edit_status'+o.id" src="/images/edit_icon-black.png" alt="Редактировать" class="edit-status">
                             </div></td>
-	              	    	<!-- <td><div class='td-wrap'>{{o.email}}</div></td> -->
-	              	    	<td><div class='td-wrap'>{{o.name }}<br><br>{{ o.phone}}</div></td>
-	              	    	<!-- <td><div class='td-wrap'>{{o.billing_name }}<br>{{ o.billing_address }}<br>{{ o.billing_phone}}</div></td> -->
+	              	    	<td><div class='td-wrap'>
+                                  Имя: {{o.name}}<br>
+                                  Телефон: {{o.phone}}<br>
+                                  Перезвонить: {{ (o.callback==1) ? "Да": "Нет"}}
+                            </div></td>
+                            <td><div class='td-wrap'>
+                                  Город: {{o.name}}<br>
+                                  Дом: {{o.phone}}<br>
+                                  <div v-if="o.apartment">Квартира: {{o.apartment}}</div>
+                                  <div v-if="o.floor">Этаж: {{o.floor}}</div>
+                                  <div v-if="o.intercom">Домофон: {{o.intercom}}</div>
+                                  <div v-if="o.korpus">Корпус: {{o.korpus}}</div>
+                                  <div v-if="o.entrance">Подъезд: {{o.entrance}}</div>
+                            </div></td>
+                            <td><div class='td-wrap'>
+                                  {{o.comment}}
+                            </div></td>
 	              	    	<td><div class='td-wrap'>{{o.created_at}}</div></td>
 	              	    </tr>
 	                </tbody>
                 </table>
             </div>
       </div>
+
 
 
         <!------------------------------------------------------------------><!------------------------------------------------------------------>
@@ -239,9 +299,8 @@ export default {
 
 
     mounted() {
-        let tries = 4;
         this.loadOrders();
-        let timeout = setTimeout(()=>{this.loadOrders(); if(!(tries--)) clearTimeout(timeout)}, 500);
+        let timeout = setTimeout(()=>{this.loadOrders(); if(window.Laravel.api_token) clearTimeout(timeout)}, 700);
     },
     methods: {
 
@@ -257,7 +316,11 @@ export default {
         },
 
         loadOrders(){
-            axios.get('api/get-orders', {})
+            axios.get('api/get-orders', {
+                headers:{
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
+                }
+            })
             .then(res => {
                 console.log(res.data);
                 this.orders = res.data;
@@ -332,7 +395,12 @@ export default {
             fd.append('id', this.modals.selected_order_id);
             fd.append('status', newStatus);
 
-            axios.post('api/change-status-order', fd)
+            axios.post('api/change-status-order', fd, {
+                headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
+                    "Content-type": "multi-part/form-data"
+                }
+            })
             .then((res=>{
                 console.log(res);
                 this.loadOrders();

@@ -8,7 +8,7 @@
                 Создать баннер
             </div>
             <div class="pizza new__inner">
-                <form class="admin-create__pizza__form"  v-if="refreshPage == false" >
+                <form class="admin-create__pizza__form" method="POST" v-if="refreshPage == false" >
                     <input v-model="bannerName" type="text" name="name" placeholder="Название">
                     <input v-model="bannerLink" type="text" name="name" placeholder="*Cсылка">
                     <input @change="handleFileUpload" ref="file" type="file">
@@ -52,7 +52,7 @@
                 Редактировать баннер
             </div>
             <div v-if="edit.mode" class="pizza new__inner">
-                <form class="admin-create__pizza__form"  v-if="refreshPage == false" >
+                <form class="admin-create__pizza__form"  method="POST" v-if="refreshPage == false" >
                     <input v-model="edit.banner.name" type="text" name="name" placeholder="Название">
                     <input v-model="edit.banner.link" type="text" name="name" placeholder="*Cсылка">
                     <input @change="editHandleFileUpload" ref="file" type="file">
@@ -148,8 +148,8 @@ export default {
 
             axios.post('api/make-banner', formData, {
                 headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
                     "Content-type": "multi-part/form-data"
-                    // "Content-type": "application/json"
                 }
             }).then((res)=>{
                 console.log(res.data);
@@ -175,8 +175,8 @@ export default {
 
             axios.post('api/edit-banner', formData, {
                 headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
                     "Content-type": "multi-part/form-data"
-                    // "Content-type": "application/json"
                 }
             }).then((res)=>{
                 console.log(res.data);
@@ -193,7 +193,12 @@ export default {
         },
 
         deleteBanner(id){
-            axios.post('/api/delete-banner', {id})
+            axios.post('/api/delete-banner', {id}, {
+                headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
+                    "Content-type": "multi-part/form-data"
+                }
+            })
             .then((res)=>{
                 this.loadBanners();
                 this.refresh();
@@ -208,7 +213,11 @@ export default {
 
 
         loadBanners(){
-            axios.get('api/get-banners')
+            axios.get('api/get-banners', {
+                headers:{
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
+                }
+            })
             .then(res => {
                 this.banners = res.data;
                 console.log(this.banners);

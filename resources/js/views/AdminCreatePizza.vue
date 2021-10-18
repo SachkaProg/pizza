@@ -2,7 +2,7 @@
     <div class="pizza">
         <div class="container">
             <h3 class="h-heading">
-                Пицца 
+                Пицца
             </h3>
             <div class="pizza new__inner">
 
@@ -79,7 +79,7 @@
                         Заказать
                     </div>
                 </div>
-                            
+
             </div>
 
 
@@ -94,7 +94,7 @@
 
         </div>
     </div>
-    
+
 </template>
 
 <script>
@@ -132,7 +132,7 @@ export default {
     mounted() {
         this.loadPizza();
         this.loadAdditions();
-        
+
     },
     methods: {
         stepUpStage(){
@@ -154,7 +154,7 @@ export default {
 
         createPizza(){
 
-            let formData = new FormData();            
+            let formData = new FormData();
             formData.append('name', this.pizzaName);
 
             formData.append('img', this.file);
@@ -175,8 +175,8 @@ export default {
 
             axios.post('api/create-pizza', formData, {
                 headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
                     "Content-type": "multi-part/form-data"
-                    // "Content-type": "application/json"
                 }
             });
 
@@ -187,9 +187,9 @@ export default {
 
             // console.log(formData);
             for (var pair of formData.entries()) {
-                console.log(pair[0]+ ', ' + pair[1]); 
+                console.log(pair[0]+ ', ' + pair[1]);
             }
-            
+
             this.refresh();
         },
 
@@ -219,13 +219,13 @@ export default {
                 this.pizzas = res.data;
                 console.log(res.data);
                 console.log(this.pizzas);
-                
+
                     this.pizzas.forEach((el)=>{
                         el.composition = JSON.parse(el.composition);
                         el.created_at = this.getDate(+Date.parse(el.created_at));
                         el.created_date = new Date(+Date.parse(el.created_at));
                     });
-               
+
                 console.log(this.pizzas);
             })
         },
@@ -236,7 +236,7 @@ export default {
 
                 this.additions = res.data;
 
-               
+
                 console.log(this.additions);
             })
         },
@@ -258,7 +258,7 @@ export default {
         }
 
     }
-  
+
 }
 </script>
 

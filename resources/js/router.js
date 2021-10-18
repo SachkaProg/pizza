@@ -15,53 +15,79 @@ import AdminCreatePizza from './views/AdminCreatePizza.vue'
 import AdminCreateAddition from './views/AdminCreateAddition.vue'
 import AdminBanners from './views/AdminBanners.vue'
 
-const routes = [
-  {
-    path: '/',
-    name: 'main',
-    component: Main
-  },
-  {
-    path: '/cart',
-    name: 'cart',
-    component: Cart
-  },
-  {
-    path: '/order',
-    name: 'order',
-    component: Order
-  },
-  {
-    path: '/order-success',
-    name: 'order-success',
-    component: OrderSuccess
-  },
-  {
-    path: '/admin-create-pizza',
-    name: 'admin-create-pizza',
-    component: AdminCreatePizza
-  },
-  {
-    path: '/admin-create-addition',
-    name: 'admin-create-addition',
-    component: AdminCreateAddition
-  },
-
-  {
-    path: '/admin-orders',
-    name: 'admin-orders',
-    component: AdminOrders
-  },
-
-  {
-    path: '/admin-banners',
-    name: 'admin-banners',
-    component: AdminBanners
-  },
-
-];
-
-export default new vueRouter({
+const router = new vueRouter({
     mode: 'history',
-    routes
+    routes:[
+        {
+          path: '/',
+          name: 'main',
+          component: Main
+        },
+        {
+          path: '/cart',
+          name: 'cart',
+          component: Cart
+        },
+        {
+          path: '/order',
+          name: 'order',
+          component: Order
+        },
+        {
+          path: '/order-success',
+          name: 'order-success',
+          component: OrderSuccess
+        },
+        {
+          path: '/admin-create-pizza',
+          name: 'admin-create-pizza',
+          component: AdminCreatePizza,
+          meta: {
+            role: "admin",
+          },
+        },
+        {
+          path: '/admin-create-addition',
+          name: 'admin-create-addition',
+          component: AdminCreateAddition,
+          meta: {
+            role: "admin",
+          },
+        },
+
+        {
+          path: '/admin-orders',
+          name: 'admin-orders',
+          component: AdminOrders,
+          meta: {
+            role: "admin",
+          },
+        },
+
+        {
+          path: '/admin-banners',
+          name: 'admin-banners',
+          component: AdminBanners,
+          meta: {
+            role: "admin",
+          },
+        },
+    ]
 });
+
+
+router.beforeEach((to, from, next)=>{
+    let userRole = window.Laravel.user?.role;
+    if(to.meta == undefined) next();
+    else if(to.meta.role=="admin"){
+        if(userRole=="admin") {
+            next();
+        } else
+          next({
+            name: "main"
+          });
+    }
+    next();
+});
+
+export default router;

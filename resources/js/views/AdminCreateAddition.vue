@@ -43,7 +43,7 @@
                         Заказать
                     </div>
                 </div>
-                            
+
             </div> -->
 
                 <div v-if="refreshPage == false" class="pizza__pop-up__ingradients-list adm-add-list">
@@ -78,7 +78,7 @@
 
         </div>
     </div>
-    
+
 </template>
 
 <script>
@@ -123,7 +123,7 @@ export default {
 
         createAddition(){
 
-            let formData = new FormData();            
+            let formData = new FormData();
             formData.append('name', this.additionName);
 
             formData.append('img', this.file);
@@ -137,8 +137,8 @@ export default {
 
             axios.post('api/create-addition', formData, {
                 headers: {
+                    'Authorization': 'Bearer '+ window.Laravel.api_token,
                     "Content-type": "multi-part/form-data"
-                    // "Content-type": "application/json"
                 }
             });
 
@@ -149,9 +149,9 @@ export default {
 
             // console.log(formData);
             for (var pair of formData.entries()) {
-                console.log(pair[0]+ ', ' + pair[1]); 
+                console.log(pair[0]+ ', ' + pair[1]);
             }
-            
+
             this.loadAdditions();
             this.refresh();
         },
@@ -181,7 +181,7 @@ export default {
 
                 this.additions = res.data;
 
-               
+
                 console.log(this.additions);
             })
         },
@@ -191,7 +191,7 @@ export default {
         },
 
     }
-  
+
 }
 </script>
 
