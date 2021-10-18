@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string("status")->default("active"); // active, completed, rejected
             $table->json("order");
             $table->decimal("total");
             $table->string("name");

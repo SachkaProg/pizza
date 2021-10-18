@@ -9,7 +9,7 @@
                     Поля со звездочкой обязательны к заполнению
                 </div>
 
-                <form class="order__form">
+                <form name="order_form" class="order__form">
 
                     <div class="order__form__main-row">
                         <div class="order__form-input__inner">
@@ -81,7 +81,7 @@
                     <textarea name="comment" placeholder="Оставить комментарий"></textarea>
 
                     <div class="order__form-input__inner">
-                            <input type="checkbox" id="checkbox-id" @click="checkboxMessage" />
+                            <input type="checkbox" name="callback" id="checkbox-id" @click="checkboxMessage" />
                             <label for="checkbox-id">Не перезванивать</label>
                             <div class="order__form-input__invalid checkbox__feedback">
                                 <div class="order__form-input__invalid__text">
@@ -118,11 +118,13 @@
 
 
 
-
-                <router-link class="cart-btn make-order-btn" to="order-success">
+                <div class="error-msg" v-if="requestError">
+                    Произошла ошибка. Попробуйте позже или позвоните по горячему номеру
+                </div>
+                <a @click="makeOrderRequest" class="cart-btn make-order-btn" to="order-success">
                     Заказать
                     <img src="/images/btns/arrow-next-white.png" alt="" class="cart-btn__arrow">
-                </router-link>
+                </a>
             </div>
         </div>
 
@@ -137,6 +139,7 @@ import {mapGetters} from 'vuex'
 
 import HeaderCart from '../components/HeaderCart.vue'
 import MainFooter from '../components/MainFooter.vue'
+import axios from 'axios'
 
 export default {
   name: 'Cart',
@@ -153,6 +156,7 @@ export default {
             street: '',
             house: '',
             checkboxText: false,
+            requestError: false,
         }
   },
   validations: {
@@ -179,17 +183,45 @@ export default {
   },
 
   methods: {
-      checkboxToggle(){
-          if(this.checkboxText == false){this.checkboxText=true}
-          else{this.checkboxText=false}
-      },
+        checkboxToggle(){
+            if(this.checkboxText == false){this.checkboxText=true}
+            else{this.checkboxText=false}
+        },
 
-      checkboxMessage(){
-          $(".order__form-input__invalid.checkbox__feedback").show('slow');
-            setTimeout(function() {
-                $(".order__form-input__invalid.checkbox__feedback").hide('slow');
-            }, 5000);
-      }
+        checkboxMessage(){
+            $(".order__form-input__invalid.checkbox__feedback").show('slow');
+              setTimeout(function() {
+                  $(".order__form-input__invalid.checkbox__feedback").hide('slow');
+              }, 5000);
+        },
+
+        makeOrderRequest(){
+            console.log(this.CART);
+            let form = document.forms.order_form;
+            let fd = new FormData(form);
+            fd.set("callback", !fd.get("callback"));
+            fd.set("order", JSON.stringify(this.CART));
+            fd.set("total", this.cartTotalCost);
+
+            this.$v.$touch();
+            if(this.$v.$invalid || this.CART.length == 0){
+                console.log("invalid form");
+                return;
+            }
+            axios.post("/api/make-order", fd)
+                .then((res)=>{
+                    res = res.data;
+                    if(res.status){
+                        this.$router.push("order-success");
+                        this.CART = [];
+                    } else {
+
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
+        }
     // setName(value) {
     //   this.name = value
     //   this.$v.name.$touch()
@@ -428,6 +460,12 @@ input:disabled + label:before {
  background: #eee;
  color: #aaa;
 }
+
+.error-msg{
+    color: red;
+    font-weight: bold;
+}
+
 </style>
 
 <style>
@@ -546,5 +584,6 @@ input:disabled + label:before {
             margin-right: 0;
             background: #FF6900;
         }
+
     }
 </style>
