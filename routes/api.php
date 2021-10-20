@@ -20,8 +20,15 @@ use App\Http\Controllers\CategoryController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::post('/create-pizza', 'App\Http\Controllers\PizzaController@createPizza');
+Route::group(['middleware'=>['auth:api', 'role:admin']], function(){
+    Route::post('/create-pizza', 'App\Http\Controllers\PizzaController@createPizza');
+    Route::post('/create-addition', 'App\Http\Controllers\AdditionController@createAddition');
+    Route::post('/change-status-order', 'App\Http\Controllers\OrderController@changeStatusOrder');
+    Route::post('/make-banner', 'App\Http\Controllers\BannerController@makeBanner');
+    Route::post('/edit-banner', 'App\Http\Controllers\BannerController@editBanner');
+    Route::post('/delete-banner', 'App\Http\Controllers\BannerController@deleteBanner');
+    Route::get('/get-orders', 'App\Http\Controllers\OrderController@getOrders');
+});
 
 Route::get('/get-pizza', 'App\Http\Controllers\PizzaController@getPizza');
 Route::get('/get-categories', 'App\Http\Controllers\CategoryController@getCategories');
@@ -31,10 +38,14 @@ Route::post('/get-goods', 'App\Http\Controllers\GoodsController@getGoods');
 Route::get('/get-sauces', 'App\Http\Controllers\GoodsController@getSauces');
 
 
-Route::post('/create-addition', 'App\Http\Controllers\AdditionController@createAddition');
 
 Route::get('/get-additions', 'App\Http\Controllers\AdditionController@getAdditions');
 
 
 Route::post('/get-ingradient-item', 'App\Http\Controllers\AdditionController@IngradientItemByName');
+
+Route::post('/make-order', 'App\Http\Controllers\OrderController@makeOrder');
+
+
+Route::get('/get-banners', 'App\Http\Controllers\BannerController@getBanners');
 

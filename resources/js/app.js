@@ -25,10 +25,11 @@ Vue.use(Vuelidate)
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
 Vue.component('v-header', require('./components/Header.vue').default);
-
 Vue.component('v-nav', require('./components/MainNav.vue').default);
+
+Vue.component('v-auth-token', require('./components/AuthToken.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Order;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -22,8 +23,10 @@ class OrderController extends Controller
         $comment = $request->input("comment");
         $callback = $request->input("callback");
 
+
         $order = Order::create([
             'order' => $order,
+            'status' => 'active',
             'total' => $total,
             'name' => $name,
             'phone' => $phone,
@@ -35,15 +38,38 @@ class OrderController extends Controller
             'korpus' => $korpus,
             'entrance' => $entrance,
             'comment' => $comment,
-            'callback' => (bool) $callback,
+            'callback' => (int) $callback,
         ]);
+
 
         return [
             "status" => true,
         ];
     }
 
-    public function getOrder(){
-        return Order::all();
+    public function getOrders(){
+        $active = Order::where('status', 'active')->orderBy('created_at')->get();
+        $completed = Order::where('status', 'completed')->orderBy('created_at')->get();
+        $rejected = Order::where('status', 'rejected')->orderBy('created_at')->get();
+        return [
+            'active' => $active,
+            'completed' => $completed,
+            'rejected' => $rejected
+        ];
+    }
+
+    public function changeStatusOrder(Request $req)
+    {
+        $id = $req->id;
+        $status = $req->status;
+
+        $order = Order::where('id', $id)->update([
+            'status' => $status
+        ]);
+
+        return [
+            'status' => true,
+            'order'  => $order
+        ];
     }
 }
