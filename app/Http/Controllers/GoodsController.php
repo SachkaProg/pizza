@@ -19,7 +19,12 @@ class GoodsController extends Controller
     }
 
     public function getSauces(){
-
         return Sauce::all();
+    }
+     public function list(){
+     	$goods = Good::orderBy('category')->get();
+        return view('goods.list', [
+        	'goods' => $goods
+        ]);
     }
 }
