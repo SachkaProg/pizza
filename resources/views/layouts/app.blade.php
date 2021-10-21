@@ -48,6 +48,15 @@
                             <li class="nav-item">
                                     <a class="nav-link" href="{{ route('goodsList') }}">Категории</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin-create-addition">Добавки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin-banners">Банеры</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin-orders">Заказы</a>
+                            </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

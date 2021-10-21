@@ -21,9 +21,11 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
+
 Route::get('/get-api-token', [\App\Http\Controllers\ApiTokenController::class, 'update'])->middleware('auth');
 
-Route::get('/pizza/list', [App\Http\Controllers\PizzaController::class, 'list'] )->name('pizzaList');;
+
+Route::get('/admin', [App\Http\Controllers\PizzaController::class, 'list'] )->name('pizzaList');;
 Route::get('/pizza/delete', [App\Http\Controllers\PizzaController::class, 'delete'] )->name('pizzaDelete');
 Route::get('/pizza/update', [App\Http\Controllers\PizzaController::class, 'delete'] )->name('pizzaUpdate');
 
