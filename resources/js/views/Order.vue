@@ -210,6 +210,7 @@ export default {
             }
             axios.post("/api/make-order", fd)
                 .then((res)=>{
+                    console.log(res.data);
                     res = res.data;
                     if(res.status){
                         this.$router.push("order-success");

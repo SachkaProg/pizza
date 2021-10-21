@@ -2690,7 +2690,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 // });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'MainSlider'
+  name: 'MainSlider',
+  data: function data() {
+    return {
+      banners: []
+    };
+  },
+  mounted: function mounted() {
+    this.loadBanners();
+  },
+  methods: {
+    loadBanners: function loadBanners() {
+      var _this = this;
+
+      axios.get('api/get-banners').then(function (res) {
+        _this.banners = res.data;
+        console.log(res.data);
+        setTimeout(function () {
+          $('.main-slider').slick("unslick");
+          $('.main-slider').not('.slick-initialized').slick({
+            slidesToShow: 1,
+            centerMode: true,
+            centerPadding: '60px',
+            variableWidth: true,
+            dots: true,
+            appendDots: $('.slick-slider-dots'),
+            arrows: false,
+            infinite: true,
+            speed: 1000,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            responsive: [{
+              breakpoint: 375,
+              settings: {
+                dots: false
+              }
+            }]
+          });
+        }, 0);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -4010,8 +4050,7 @@ __webpack_require__.r(__webpack_exports__);
         id: id
       }, {
         headers: {
-          'Authorization': 'Bearer ' + window.Laravel.api_token,
-          "Content-type": "multi-part/form-data"
+          'Authorization': 'Bearer ' + window.Laravel.api_token
         }
       }).then(function (res) {
         _this3.loadBanners();
@@ -5769,6 +5808,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/make-order", fd).then(function (res) {
+        console.log(res.data);
         res = res.data;
 
         if (res.status) {
@@ -10839,7 +10879,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.good-item{\r\n        margin-right: 20px;\n}\n}\n@media(max-width: 375px) {\n.good-item__content-inner{\r\n        width: 100%;\n}\n.h-heading{\r\n        font-size: 15px;\n}\n.good .h-heading{\r\n        display: none;\n}\n.good{\r\n        margin-bottom: 20px;\n}\n.good-item{\r\n        flex-direction: row;\r\n        width: 315px;\r\n        margin-right: 0;\r\n        padding-top: 20px;\r\n        margin-bottom: 0;\n}\n.good-item__img{\r\n        height: 100px;\r\n        margin-bottom: 0;\n}\n.good-item__img-img{\r\n        width: 100px;\r\n        height: 100px;\r\n        margin-right: 14px;\n}\n.good-item__discount--new{\r\n        width: 40px;\r\n        height: 18px;\r\n        font-size: 10px;\r\n        line-height: 125%;\r\n        top: 10px;\r\n        right: 14px;\n}\n.good-item__name-desc{\r\n        display: flex;\r\n        flex-direction: column;\n}\n.good-item__price-order{\r\n        align-items: flex-end;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.good-item{\n        margin-right: 20px;\n}\n}\n@media(max-width: 375px) {\n.good-item__content-inner{\n        width: 100%;\n}\n.h-heading{\n        font-size: 15px;\n}\n.good .h-heading{\n        display: none;\n}\n.good{\n        margin-bottom: 20px;\n}\n.good-item{\n        flex-direction: row;\n        width: 315px;\n        margin-right: 0;\n        padding-top: 20px;\n        margin-bottom: 0;\n}\n.good-item__img{\n        height: 100px;\n        margin-bottom: 0;\n}\n.good-item__img-img{\n        width: 100px;\n        height: 100px;\n        margin-right: 14px;\n}\n.good-item__discount--new{\n        width: 40px;\n        height: 18px;\n        font-size: 10px;\n        line-height: 125%;\n        top: 10px;\n        right: 14px;\n}\n.good-item__name-desc{\n        display: flex;\n        flex-direction: column;\n}\n.good-item__price-order{\n        align-items: flex-end;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11127,7 +11167,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px){\n.footer .container{\r\n        padding: 22px 15px 0;\n}\n.footer__inner{\r\n        flex-direction: column;\r\n        align-items: flex-start;\n}\n.footer__content__img,\r\n    .footer__back-btn,\r\n    .footer__line{\r\n        display: none;\n}\n.footer__content__text{\r\n        margin-bottom: 30px;\n}\n.footer__social-btns{\r\n        display: flex;\r\n        align-items: center;\r\n        align-self: center;\n}\n.footer .container.copyright{\r\n        display: flex;\r\n        justify-content: center;\n}\n.footer-block{\r\n        padding-top: 30px;\n}\n.footer-block+.footer-block{\r\n        padding-top: 20px;\n}\n.footer-block span.span-orange a.span-orange{\r\n        font-size: 22px;\n}\n.footer__water-mark{\r\n        padding-bottom: 15px;\n}\n}\n@media(max-width: 375px){\n.footer .container{\r\n            padding: 22px 15px 0;\n}\n.footer__inner{\r\n            flex-direction: column;\r\n            align-items: flex-start;\n}\n.footer__content__img,\r\n        .footer__back-btn,\r\n        .footer__line{\r\n            display: none;\n}\n.footer__content__text{\r\n            margin-bottom: 30px;\n}\n.footer__social-btns{\r\n            display: flex;\r\n            align-items: center;\r\n            align-self: center;\n}\n.footer .container.copyright{\r\n            display: flex;\r\n            justify-content: center;\n}\n.footer-block{\r\n            padding-top: 30px;\n}\n.footer-block+.footer-block{\r\n            padding-top: 20px;\n}\n.footer-block span.span-orange a.span-orange{\r\n            font-size: 22px;\n}\n.footer__water-mark{\r\n            padding-bottom: 15px;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px){\n.footer .container{\n        padding: 22px 15px 0;\n}\n.footer__inner{\n        flex-direction: column;\n        align-items: flex-start;\n}\n.footer__content__img,\n    .footer__back-btn,\n    .footer__line{\n        display: none;\n}\n.footer__content__text{\n        margin-bottom: 30px;\n}\n.footer__social-btns{\n        display: flex;\n        align-items: center;\n        align-self: center;\n}\n.footer .container.copyright{\n        display: flex;\n        justify-content: center;\n}\n.footer-block{\n        padding-top: 30px;\n}\n.footer-block+.footer-block{\n        padding-top: 20px;\n}\n.footer-block span.span-orange a.span-orange{\n        font-size: 22px;\n}\n.footer__water-mark{\n        padding-bottom: 15px;\n}\n}\n@media(max-width: 375px){\n.footer .container{\n            padding: 22px 15px 0;\n}\n.footer__inner{\n            flex-direction: column;\n            align-items: flex-start;\n}\n.footer__content__img,\n        .footer__back-btn,\n        .footer__line{\n            display: none;\n}\n.footer__content__text{\n            margin-bottom: 30px;\n}\n.footer__social-btns{\n            display: flex;\n            align-items: center;\n            align-self: center;\n}\n.footer .container.copyright{\n            display: flex;\n            justify-content: center;\n}\n.footer-block{\n            padding-top: 30px;\n}\n.footer-block+.footer-block{\n            padding-top: 20px;\n}\n.footer-block span.span-orange a.span-orange{\n            font-size: 22px;\n}\n.footer__water-mark{\n            padding-bottom: 15px;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11631,7 +11671,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.h-heading{\r\n        padding-top: 20px;\r\n        margin-bottom: 15px;\n}\n.popular-slider__arrow{\r\n        display: none !important;\n}\n.popular .container{\r\n        padding: 0 0 0 15px;\n}\n.popular-slider{\r\n        padding: 0;\r\n        /*width: 30000px;*/\n}\n.popular-slider__item__inner,\r\n    .popular-slider__item{\r\n        width: 198px;\n}\n.popular-slider__item__img-img{\r\n        width: 55px;\r\n        height: 55px;\n}\n.popular-slider__item__description{\r\n        font-size: 13px;\r\n        line-height: 110%;\n}\r\n\r\n    /*.popular-slider.slick-initialized.slick-slider{*/\r\n    /*    width: auto !important;*/\r\n    /*}*/\r\n\r\n    /*.popular .slick-list {*/\r\n    /*    width: auto !important;*/\r\n    /*}*/\n}\n@media(max-width: 375px) {\n.h-heading{\r\n            padding-top: 20px;\r\n            margin-bottom: 15px;\n}\n.popular-slider__arrow{\r\n            display: none !important;\n}\n.popular .container{\r\n            padding: 0 0 0 15px;\n}\n.popular-slider{\r\n            padding: 0;\r\n            /*width: 30000px;*/\n}\n.popular-slider__item__inner,\r\n        .popular-slider__item{\r\n            width: 198px;\n}\n.popular-slider__item__img-img{\r\n            width: 55px;\r\n            height: 55px;\n}\n.popular-slider__item__description{\r\n            font-size: 13px;\r\n            line-height: 110%;\n}\r\n\r\n        /*.popular-slider.slick-initialized.slick-slider{*/\r\n        /*    width: auto !important;*/\r\n        /*}*/\r\n\r\n        /*.popular .slick-list {*/\r\n        /*    width: auto !important;*/\r\n        /*}*/\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.h-heading{\n        padding-top: 20px;\n        margin-bottom: 15px;\n}\n.popular-slider__arrow{\n        display: none !important;\n}\n.popular .container{\n        padding: 0 0 0 15px;\n}\n.popular-slider{\n        padding: 0;\n        /*width: 30000px;*/\n}\n.popular-slider__item__inner,\n    .popular-slider__item{\n        width: 198px;\n}\n.popular-slider__item__img-img{\n        width: 55px;\n        height: 55px;\n}\n.popular-slider__item__description{\n        font-size: 13px;\n        line-height: 110%;\n}\n\n    /*.popular-slider.slick-initialized.slick-slider{*/\n    /*    width: auto !important;*/\n    /*}*/\n\n    /*.popular .slick-list {*/\n    /*    width: auto !important;*/\n    /*}*/\n}\n@media(max-width: 375px) {\n.h-heading{\n            padding-top: 20px;\n            margin-bottom: 15px;\n}\n.popular-slider__arrow{\n            display: none !important;\n}\n.popular .container{\n            padding: 0 0 0 15px;\n}\n.popular-slider{\n            padding: 0;\n            /*width: 30000px;*/\n}\n.popular-slider__item__inner,\n        .popular-slider__item{\n            width: 198px;\n}\n.popular-slider__item__img-img{\n            width: 55px;\n            height: 55px;\n}\n.popular-slider__item__description{\n            font-size: 13px;\n            line-height: 110%;\n}\n\n        /*.popular-slider.slick-initialized.slick-slider{*/\n        /*    width: auto !important;*/\n        /*}*/\n\n        /*.popular .slick-list {*/\n        /*    width: auto !important;*/\n        /*}*/\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11703,7 +11743,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.banners__list[data-v-44813dd2]{\n    margin-top: 20px;\n    display: flex;\n    flex-wrap: wrap;\n    width: 100%;\n}\n.banners__list-item[data-v-44813dd2]{\n    width: 33%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    height: 100px;\n}\n.banners__list-item-i[data-v-44813dd2]{\n    width: 300px;\n    height: 300px;\n}\n.banners__list-item__img[data-v-44813dd2]{\n    width: 300px;\n    height: 300px;\n}\n.banners__list button[data-v-44813dd2]{\n    width: 80%;\n}\n.h-heading[data-v-44813dd2]{\n    margin: 10px 0 0 10px;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.banners__list[data-v-44813dd2]{\n    margin-top: 20px;\n    display: flex;\n    flex-wrap: wrap;\n    width: 100%;\n}\n.banners__list-item[data-v-44813dd2]{\n    width: 33%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    height: 100px;\n}\n.banners__list-item-i[data-v-44813dd2]{\n    width: 300px;\n    height: 300px;\n}\n.banners__list-item__img[data-v-44813dd2]{\n    width: 300px;\n}\n.banners__list button[data-v-44813dd2]{\n    width: 80%;\n}\n.h-heading[data-v-44813dd2]{\n    margin: 10px 0 0 10px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11895,7 +11935,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.cart-additives__list{\r\n        flex-wrap: nowrap;\r\n        overflow-x: scroll;\r\n        -ms-overflow-style:none;\r\n        scrollbar-width: 0;\n}\n.cart-additives__list::-webkit-scrollbar {\r\n        display: none;\n}\n.cart-additives__item{\r\n        flex-direction: row;\r\n        width: 135px;\r\n        height: 59px;\r\n        padding: 7px 11px;\r\n        align-items: center;\r\n        margin-right: 15px;\n}\n.cart-additives__item__img{\r\n        width: 45px;\r\n        height: 45px;\n}\n.cart-additives__item__img-img{\r\n        width: 45px;\r\n        height: 45px;\n}\n.cart-additives__item__name-price{\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\n}\n.cart-additives__item__name{\r\n        font-size: 10px;\r\n        line-height: 125%;\r\n        margin-bottom: 5px;\r\n        padding-top: 14px;\r\n        white-space: nowrap;\n}\n.cart-additives__item__price{\r\n        width: 41px;\r\n        height: 17px;\r\n        font-size: 10px;\r\n        line-height: 125%;\n}\n.cart-additives__title{\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: 600;\r\n        font-size: 15px;\r\n        line-height: 125%;\r\n        /* identical to box height, or 19px */\r\n        color: #343435;\n}\n.cart-btn.make-order-btn{\r\n        width: 100%;\r\n        margin-right: 15px;\r\n        font-family: Montserrat;\r\n        font-style: normal;\r\n        font-weight: 500;\r\n        font-size: 18px;\r\n        line-height: 125%;\r\n        color: #FFFFFF;\r\n        text-align: center;\r\n        justify-content: center;\n}\n.cart-btn.make-order-btn .cart-btn__arrow{\r\n        display: none;\n}\n}\n@media(max-width: 375px) {\n.cart-additives__list{\r\n            flex-wrap: nowrap;\r\n            overflow-x: scroll;\r\n            -ms-overflow-style:none;\r\n            scrollbar-width: 0;\n}\n.cart-additives__list::-webkit-scrollbar {\r\n            display: none;\n}\n.cart-additives__item{\r\n            flex-direction: row;\r\n            width: 135px;\r\n            height: 59px;\r\n            padding: 7px 11px;\r\n            align-items: center;\r\n            margin-right: 15px;\n}\n.cart-additives__item__img{\r\n            width: 45px;\r\n            height: 45px;\n}\n.cart-additives__item__img-img{\r\n            width: 45px;\r\n            height: 45px;\n}\n.cart-additives__item__name-price{\r\n            display: flex;\r\n            flex-direction: column;\r\n            justify-content: center;\n}\n.cart-additives__item__name{\r\n            font-size: 10px;\r\n            line-height: 125%;\r\n            margin-bottom: 5px;\r\n            padding-top: 14px;\r\n            white-space: nowrap;\n}\n.cart-additives__item__price{\r\n            width: 41px;\r\n            height: 17px;\r\n            font-size: 10px;\r\n            line-height: 125%;\n}\n.cart-additives__title{\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: 600;\r\n            font-size: 15px;\r\n            line-height: 125%;\r\n            /* identical to box height, or 19px */\r\n            color: #343435;\n}\n.cart-btn.make-order-btn{\r\n            width: 100%;\r\n            margin-right: 15px;\r\n            font-family: Montserrat;\r\n            font-style: normal;\r\n            font-weight: 500;\r\n            font-size: 18px;\r\n            line-height: 125%;\r\n            color: #FFFFFF;\r\n            text-align: center;\r\n            justify-content: center;\n}\n.cart-btn.make-order-btn .cart-btn__arrow{\r\n            display: none;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.cart-additives__list{\n        flex-wrap: nowrap;\n        overflow-x: scroll;\n        -ms-overflow-style:none;\n        scrollbar-width: 0;\n}\n.cart-additives__list::-webkit-scrollbar {\n        display: none;\n}\n.cart-additives__item{\n        flex-direction: row;\n        width: 135px;\n        height: 59px;\n        padding: 7px 11px;\n        align-items: center;\n        margin-right: 15px;\n}\n.cart-additives__item__img{\n        width: 45px;\n        height: 45px;\n}\n.cart-additives__item__img-img{\n        width: 45px;\n        height: 45px;\n}\n.cart-additives__item__name-price{\n        display: flex;\n        flex-direction: column;\n        justify-content: center;\n}\n.cart-additives__item__name{\n        font-size: 10px;\n        line-height: 125%;\n        margin-bottom: 5px;\n        padding-top: 14px;\n        white-space: nowrap;\n}\n.cart-additives__item__price{\n        width: 41px;\n        height: 17px;\n        font-size: 10px;\n        line-height: 125%;\n}\n.cart-additives__title{\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: 600;\n        font-size: 15px;\n        line-height: 125%;\n        /* identical to box height, or 19px */\n        color: #343435;\n}\n.cart-btn.make-order-btn{\n        width: 100%;\n        margin-right: 15px;\n        font-family: Montserrat;\n        font-style: normal;\n        font-weight: 500;\n        font-size: 18px;\n        line-height: 125%;\n        color: #FFFFFF;\n        text-align: center;\n        justify-content: center;\n}\n.cart-btn.make-order-btn .cart-btn__arrow{\n        display: none;\n}\n}\n@media(max-width: 375px) {\n.cart-additives__list{\n            flex-wrap: nowrap;\n            overflow-x: scroll;\n            -ms-overflow-style:none;\n            scrollbar-width: 0;\n}\n.cart-additives__list::-webkit-scrollbar {\n            display: none;\n}\n.cart-additives__item{\n            flex-direction: row;\n            width: 135px;\n            height: 59px;\n            padding: 7px 11px;\n            align-items: center;\n            margin-right: 15px;\n}\n.cart-additives__item__img{\n            width: 45px;\n            height: 45px;\n}\n.cart-additives__item__img-img{\n            width: 45px;\n            height: 45px;\n}\n.cart-additives__item__name-price{\n            display: flex;\n            flex-direction: column;\n            justify-content: center;\n}\n.cart-additives__item__name{\n            font-size: 10px;\n            line-height: 125%;\n            margin-bottom: 5px;\n            padding-top: 14px;\n            white-space: nowrap;\n}\n.cart-additives__item__price{\n            width: 41px;\n            height: 17px;\n            font-size: 10px;\n            line-height: 125%;\n}\n.cart-additives__title{\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: 600;\n            font-size: 15px;\n            line-height: 125%;\n            /* identical to box height, or 19px */\n            color: #343435;\n}\n.cart-btn.make-order-btn{\n            width: 100%;\n            margin-right: 15px;\n            font-family: Montserrat;\n            font-style: normal;\n            font-weight: 500;\n            font-size: 18px;\n            line-height: 125%;\n            color: #FFFFFF;\n            text-align: center;\n            justify-content: center;\n}\n.cart-btn.make-order-btn .cart-btn__arrow{\n            display: none;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11919,7 +11959,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.cart-item{\r\n        display: none;\n}\n.cart-list{\r\n        width: 100%;\r\n        border-bottom: none;\r\n        margin-bottom: 20px;\n}\n.cart-item--mob{\r\n        display: flex;\r\n        width: 100%;\r\n        align-items: flex-start;\n}\n.cart-item__desc{\r\n        margin-bottom: 10px;\n}\n.cart-item__quantity-price__wrapper{\r\n        display: flex;\r\n        align-items: flex-end;\n}\n.cart-item__quantity__inner{\r\n        width: 70px;\r\n        height: 22px;\n}\n.cart-item__price{\r\n        white-space: nowrap;\r\n        margin-right: 0;\n}\n.cart-item__delete-btn{\r\n        margin-left: 42px;\n}\n.cart-item__img{\r\n        width: 80px;\r\n        height: 80px;\r\n        margin-right: 10px;\n}\n.cart-item__img-img{\r\n        width: 80px;\r\n        height: 80px;\n}\n.cart-item--mob__content{\r\n        padding-bottom: 20px;\r\n        flex-grow: 1;\n}\n.cart-item__delete-btn{\r\n        align-self: center;\r\n        padding-bottom: 20px;\r\n        margin-right: 15px;\n}\n.cart-item--mob__content-block{\r\n        min-height: 100px;\r\n        display: flex;\r\n        border-bottom: 1px solid #EBEDF3;\r\n        width: 100%;\n}\n.cart .container{\r\n        padding: 0 0 0 15px;\n}\n}\n@media(max-width: 375px) {\n.cart-item{\r\n            display: none;\n}\n.cart-list{\r\n            width: 100%;\r\n            border-bottom: none;\r\n            margin-bottom: 20px;\n}\n.cart-item--mob{\r\n            display: flex;\r\n            width: 100%;\r\n            align-items: flex-start;\n}\n.cart-item__desc{\r\n            margin-bottom: 10px;\n}\n.cart-item__quantity-price__wrapper{\r\n            display: flex;\r\n            align-items: flex-end;\n}\n.cart-item__quantity__inner{\r\n            width: 70px;\r\n            height: 22px;\n}\n.cart-item__price{\r\n            white-space: nowrap;\r\n            margin-right: 0;\n}\n.cart-item__delete-btn{\r\n            margin-left: 42px;\n}\n.cart-item__img{\r\n            width: 80px;\r\n            height: 80px;\r\n            margin-right: 10px;\n}\n.cart-item__img-img{\r\n            width: 80px;\r\n            height: 80px;\n}\n.cart-item--mob__content{\r\n            padding-bottom: 20px;\r\n            flex-grow: 1;\n}\n.cart-item__delete-btn{\r\n            align-self: center;\r\n            padding-bottom: 20px;\r\n            margin-right: 15px;\n}\n.cart-item--mob__content-block{\r\n            min-height: 100px;\r\n            display: flex;\r\n            border-bottom: 1px solid #EBEDF3;\r\n            width: 100%;\n}\n.cart .container{\r\n            padding: 0 0 0 15px;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.cart-item{\n        display: none;\n}\n.cart-list{\n        width: 100%;\n        border-bottom: none;\n        margin-bottom: 20px;\n}\n.cart-item--mob{\n        display: flex;\n        width: 100%;\n        align-items: flex-start;\n}\n.cart-item__desc{\n        margin-bottom: 10px;\n}\n.cart-item__quantity-price__wrapper{\n        display: flex;\n        align-items: flex-end;\n}\n.cart-item__quantity__inner{\n        width: 70px;\n        height: 22px;\n}\n.cart-item__price{\n        white-space: nowrap;\n        margin-right: 0;\n}\n.cart-item__delete-btn{\n        margin-left: 42px;\n}\n.cart-item__img{\n        width: 80px;\n        height: 80px;\n        margin-right: 10px;\n}\n.cart-item__img-img{\n        width: 80px;\n        height: 80px;\n}\n.cart-item--mob__content{\n        padding-bottom: 20px;\n        flex-grow: 1;\n}\n.cart-item__delete-btn{\n        align-self: center;\n        padding-bottom: 20px;\n        margin-right: 15px;\n}\n.cart-item--mob__content-block{\n        min-height: 100px;\n        display: flex;\n        border-bottom: 1px solid #EBEDF3;\n        width: 100%;\n}\n.cart .container{\n        padding: 0 0 0 15px;\n}\n}\n@media(max-width: 375px) {\n.cart-item{\n            display: none;\n}\n.cart-list{\n            width: 100%;\n            border-bottom: none;\n            margin-bottom: 20px;\n}\n.cart-item--mob{\n            display: flex;\n            width: 100%;\n            align-items: flex-start;\n}\n.cart-item__desc{\n            margin-bottom: 10px;\n}\n.cart-item__quantity-price__wrapper{\n            display: flex;\n            align-items: flex-end;\n}\n.cart-item__quantity__inner{\n            width: 70px;\n            height: 22px;\n}\n.cart-item__price{\n            white-space: nowrap;\n            margin-right: 0;\n}\n.cart-item__delete-btn{\n            margin-left: 42px;\n}\n.cart-item__img{\n            width: 80px;\n            height: 80px;\n            margin-right: 10px;\n}\n.cart-item__img-img{\n            width: 80px;\n            height: 80px;\n}\n.cart-item--mob__content{\n            padding-bottom: 20px;\n            flex-grow: 1;\n}\n.cart-item__delete-btn{\n            align-self: center;\n            padding-bottom: 20px;\n            margin-right: 15px;\n}\n.cart-item--mob__content-block{\n            min-height: 100px;\n            display: flex;\n            border-bottom: 1px solid #EBEDF3;\n            width: 100%;\n}\n.cart .container{\n            padding: 0 0 0 15px;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12111,7 +12151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 830px) {\n.cart-list{\r\n        width: 100%;\n}\n}\n@media(max-width: 767px) {\n.cart .recomend{\r\n        display: none;\n}\n.cart .popular{\r\n        display: block;\n}\n.cart .cart-title{\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: normal;\r\n        font-size: 24px;\r\n        line-height: 125%;\r\n        color: #343435;\r\n        text-align: center;\r\n        padding-top: 20px;\r\n        margin-bottom: 20px;\n}\n.cart__inner .cart-is-empty__img{\r\n        width: 160px;\r\n        height: 160px;\n}\n.cart__inner .cart-is-empty__text{\r\n        font-size: 15px;\r\n        line-height: 140%;\r\n        padding: 0 61px;\n}\n.cart .popular {\r\n        display: block;\n}\r\n\r\n    /*.popular-slider__arrow{*/\r\n    /*    display: none !important;*/\r\n    /*}*/\n.cart__btns__inner .mob-hide{\r\n        display: none;\n}\n.cart-btn.locked-btn{\r\n        width: 100%;\r\n        font-family: Montserrat;\r\n        font-style: normal;\r\n        font-weight: 500;\r\n        font-size: 18px;\r\n        line-height: 125%;\r\n        color: #D1D1D1;\r\n        text-align: center;\r\n        justify-content: center;\r\n        margin-right: 15px;\n}\n.cart-btn.locked-btn .cart-btn__arrow{\r\n        display: none;\n}\n.cart__total__inner{\r\n        margin-bottom: 60px;\n}\n.cart__total-price{\r\n        margin: 0 auto;\n}\n.cart .popular .h-heading{\r\n        font-weight: 600;\n}\n}\n@media(max-width: 375px) {\n.cart .recomend{\r\n            display: none;\n}\n.cart .popular{\r\n            display: block;\n}\n.cart .cart-title{\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: normal;\r\n            font-size: 24px;\r\n            line-height: 125%;\r\n            color: #343435;\r\n            text-align: center;\r\n            padding-top: 20px;\r\n            margin-bottom: 20px;\n}\n.cart__inner .cart-is-empty__img{\r\n            width: 160px;\r\n            height: 160px;\n}\n.cart__inner .cart-is-empty__text{\r\n            font-size: 15px;\r\n            line-height: 140%;\r\n            padding: 0 61px;\n}\n.cart .popular {\r\n            display: block;\n}\r\n\r\n        /*.popular-slider__arrow{*/\r\n        /*    display: none !important;*/\r\n        /*}*/\n.cart__btns__inner .mob-hide{\r\n            display: none;\n}\n.cart-btn.locked-btn{\r\n            width: 100%;\r\n            font-family: Montserrat;\r\n            font-style: normal;\r\n            font-weight: 500;\r\n            font-size: 18px;\r\n            line-height: 125%;\r\n            color: #D1D1D1;\r\n            text-align: center;\r\n            justify-content: center;\r\n            margin-right: 15px;\n}\n.cart-btn.locked-btn .cart-btn__arrow{\r\n            display: none;\n}\n.cart__total__inner{\r\n            margin-bottom: 60px;\n}\n.cart__total-price{\r\n            margin: 0 auto;\n}\n.cart .popular .h-heading{\r\n            font-weight: 600;\n}\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 830px) {\n.cart-list{\n        width: 100%;\n}\n}\n@media(max-width: 767px) {\n.cart .recomend{\n        display: none;\n}\n.cart .popular{\n        display: block;\n}\n.cart .cart-title{\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: normal;\n        font-size: 24px;\n        line-height: 125%;\n        color: #343435;\n        text-align: center;\n        padding-top: 20px;\n        margin-bottom: 20px;\n}\n.cart__inner .cart-is-empty__img{\n        width: 160px;\n        height: 160px;\n}\n.cart__inner .cart-is-empty__text{\n        font-size: 15px;\n        line-height: 140%;\n        padding: 0 61px;\n}\n.cart .popular {\n        display: block;\n}\n\n    /*.popular-slider__arrow{*/\n    /*    display: none !important;*/\n    /*}*/\n.cart__btns__inner .mob-hide{\n        display: none;\n}\n.cart-btn.locked-btn{\n        width: 100%;\n        font-family: Montserrat;\n        font-style: normal;\n        font-weight: 500;\n        font-size: 18px;\n        line-height: 125%;\n        color: #D1D1D1;\n        text-align: center;\n        justify-content: center;\n        margin-right: 15px;\n}\n.cart-btn.locked-btn .cart-btn__arrow{\n        display: none;\n}\n.cart__total__inner{\n        margin-bottom: 60px;\n}\n.cart__total-price{\n        margin: 0 auto;\n}\n.cart .popular .h-heading{\n        font-weight: 600;\n}\n}\n@media(max-width: 375px) {\n.cart .recomend{\n            display: none;\n}\n.cart .popular{\n            display: block;\n}\n.cart .cart-title{\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: normal;\n            font-size: 24px;\n            line-height: 125%;\n            color: #343435;\n            text-align: center;\n            padding-top: 20px;\n            margin-bottom: 20px;\n}\n.cart__inner .cart-is-empty__img{\n            width: 160px;\n            height: 160px;\n}\n.cart__inner .cart-is-empty__text{\n            font-size: 15px;\n            line-height: 140%;\n            padding: 0 61px;\n}\n.cart .popular {\n            display: block;\n}\n\n        /*.popular-slider__arrow{*/\n        /*    display: none !important;*/\n        /*}*/\n.cart__btns__inner .mob-hide{\n            display: none;\n}\n.cart-btn.locked-btn{\n            width: 100%;\n            font-family: Montserrat;\n            font-style: normal;\n            font-weight: 500;\n            font-size: 18px;\n            line-height: 125%;\n            color: #D1D1D1;\n            text-align: center;\n            justify-content: center;\n            margin-right: 15px;\n}\n.cart-btn.locked-btn .cart-btn__arrow{\n            display: none;\n}\n.cart__total__inner{\n            margin-bottom: 60px;\n}\n.cart__total-price{\n            margin: 0 auto;\n}\n.cart .popular .h-heading{\n            font-weight: 600;\n}\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12231,7 +12271,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* order-form */\n.order__form{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.order__form__main-row{\n    margin-bottom: 40px;\n    display: flex;\n    align-items: center;\n}\n.order__form__sub-row{\n    margin-bottom: 20px;\n    display: flex;\n    flex-wrap: wrap;\n}\n.order__form input{\n    width: 249px;\n    height: 41px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    margin-bottom: 20px;\n    margin-right: 16px;\n\n    padding: 9px 15px;\n\n    border: none;\n}\n.order__form textarea{\n    width: 793px;\n    height: 145px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    padding: 15px;\n\n    border: none;\n    resize: none;\n    margin-bottom: 40px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* order-form */\n.order__form{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.order__form__main-row{\n    margin-bottom: 40px;\n    display: flex;\n    align-items: center;\n}\n.order__form__sub-row{\n    margin-bottom: 20px;\n    display: flex;\n    flex-wrap: wrap;\n}\n.order__form input{\n    width: 249px;\n    height: 41px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    margin-bottom: 20px;\n    margin-right: 16px;\n\n    padding: 9px 15px;\n\n    border: none;\n}\n.order__form textarea{\n    width: 793px;\n    height: 145px;\n    background: #F3F3F3;\n    border-radius: 19px;\n\n    padding: 15px;\n\n    border: none;\n    resize: none;\n    margin-bottom: 40px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12255,7 +12295,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput[type=\"checkbox\"][data-v-621856bf] {\r\n display: none;\n}\nlabel[data-v-621856bf] {\r\n  color: #000;\r\n cursor: default;\r\n font-weight: normal;\r\n line-height: 30px;\r\n padding: 10px 0;\r\n vertical-align: middle;\r\n\r\n display: flex;\r\n    flex-direction: row-reverse;\r\n    justify-content: flex-end;\r\n    align-items: center;\r\n\r\n    font-family: Open Sans;\r\nfont-style: normal;\r\nfont-weight: normal;\r\nfont-size: 18px;\r\nline-height: 125%;\r\n/* identical to box height, or 22px */\r\n\r\n\r\n/* Secondary color */\r\n\r\ncolor: #343435;\r\nwidth: 220px;\n}\nlabel[data-v-621856bf]:before {\r\n content: \" \";\r\n color: #000;\r\n display: inline-block;\r\n/* шрифт Awesome*/\r\n font: 35px/30px FontAwesome;\r\n margin-left: 15px;\r\n position: relative;\r\n text-align: center;\r\n text-indent: 0px;\r\n width: 35px;\r\n height: 35px;\r\n background: #F3F3F3;\r\nborder: 2px solid #E2E2E2;\r\nbox-sizing: border-box;\r\nborder-radius: 10px;\r\n -o-border-image: initial;\r\n    border-image: initial;\r\n vertical-align: middle;\n}\ninput:checked + label[data-v-621856bf]:before {\r\n/* глифон - галочка */\r\n content: url(\"/images/checked.svg\");\n}\ninput:disabled + label[data-v-621856bf]:before {\r\n background: #eee;\r\n color: #aaa;\n}\n.error-msg[data-v-621856bf]{\r\n    color: red;\r\n    font-weight: bold;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[type=\"checkbox\"][data-v-621856bf] {\n display: none;\n}\nlabel[data-v-621856bf] {\n  color: #000;\n cursor: default;\n font-weight: normal;\n line-height: 30px;\n padding: 10px 0;\n vertical-align: middle;\n\n display: flex;\n    flex-direction: row-reverse;\n    justify-content: flex-end;\n    align-items: center;\n\n    font-family: Open Sans;\nfont-style: normal;\nfont-weight: normal;\nfont-size: 18px;\nline-height: 125%;\n/* identical to box height, or 22px */\n\n\n/* Secondary color */\n\ncolor: #343435;\nwidth: 220px;\n}\nlabel[data-v-621856bf]:before {\n content: \" \";\n color: #000;\n display: inline-block;\n/* шрифт Awesome*/\n font: 35px/30px FontAwesome;\n margin-left: 15px;\n position: relative;\n text-align: center;\n text-indent: 0px;\n width: 35px;\n height: 35px;\n background: #F3F3F3;\nborder: 2px solid #E2E2E2;\nbox-sizing: border-box;\nborder-radius: 10px;\n -o-border-image: initial;\n    border-image: initial;\n vertical-align: middle;\n}\ninput:checked + label[data-v-621856bf]:before {\n/* глифон - галочка */\n content: url(\"/images/checked.svg\");\n}\ninput:disabled + label[data-v-621856bf]:before {\n background: #eee;\n color: #aaa;\n}\n.error-msg[data-v-621856bf]{\n    color: red;\n    font-weight: bold;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12303,7 +12343,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.order .header__cart__inner {\r\n        padding-right: 0;\n}\n.order__inner{\r\n        width: 100%;\n}\n.order-title{\r\n        padding-top: 20px;\r\n        margin-bottom: 15px;\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: normal;\r\n        font-size: 24px;\r\n        line-height: 125%;\r\n        color: #343435;\r\n        text-align: center;\n}\n.required__text{\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: 600;\r\n        font-size: 10px;\r\n        line-height: 125%;\r\n        color: #F55B69;\r\n        text-align: center;\n}\n.order__form{\r\n        width: 100%;\n}\n.order__form__main-row{\r\n        flex-direction: column;\r\n        align-items: flex-start;\r\n        margin-bottom: 0;\n}\n.order__form-input__inner{\r\n        width: 100%;\n}\n.order__form input{\r\n        width: 100%;\r\n        margin-right: 0;\n}\n.order__form textarea{\r\n        width: 100%;\n}\n.order .cart-btn.home-btn-gray{\r\n        display: none;\n}\n.order .cart-btn.make-order-btn{\r\n        margin-right: 0;\r\n        background: #FF6900;\n}\n}\n@media(max-width: 375px) {\n.order .header__cart__inner {\r\n             padding-right: 0;\n}\n.order__inner{\r\n            width: 100%;\n}\n.order-title{\r\n            padding-top: 20px;\r\n            margin-bottom: 15px;\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: normal;\r\n            font-size: 24px;\r\n            line-height: 125%;\r\n            color: #343435;\r\n            text-align: center;\n}\n.required__text{\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: 600;\r\n            font-size: 10px;\r\n            line-height: 125%;\r\n            color: #F55B69;\r\n            text-align: center;\n}\n.order__form{\r\n            width: 100%;\n}\n.order__form__main-row{\r\n            flex-direction: column;\r\n            align-items: flex-start;\r\n            margin-bottom: 0;\n}\n.order__form-input__inner{\r\n            width: 100%;\n}\n.order__form input{\r\n            width: 100%;\r\n            margin-right: 0;\n}\n.order__form textarea{\r\n            width: 100%;\n}\n.order .cart-btn.home-btn-gray{\r\n            display: none;\n}\n.order .cart-btn.make-order-btn{\r\n            margin-right: 0;\r\n            background: #FF6900;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.order .header__cart__inner {\n        padding-right: 0;\n}\n.order__inner{\n        width: 100%;\n}\n.order-title{\n        padding-top: 20px;\n        margin-bottom: 15px;\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: normal;\n        font-size: 24px;\n        line-height: 125%;\n        color: #343435;\n        text-align: center;\n}\n.required__text{\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: 600;\n        font-size: 10px;\n        line-height: 125%;\n        color: #F55B69;\n        text-align: center;\n}\n.order__form{\n        width: 100%;\n}\n.order__form__main-row{\n        flex-direction: column;\n        align-items: flex-start;\n        margin-bottom: 0;\n}\n.order__form-input__inner{\n        width: 100%;\n}\n.order__form input{\n        width: 100%;\n        margin-right: 0;\n}\n.order__form textarea{\n        width: 100%;\n}\n.order .cart-btn.home-btn-gray{\n        display: none;\n}\n.order .cart-btn.make-order-btn{\n        margin-right: 0;\n        background: #FF6900;\n}\n}\n@media(max-width: 375px) {\n.order .header__cart__inner {\n             padding-right: 0;\n}\n.order__inner{\n            width: 100%;\n}\n.order-title{\n            padding-top: 20px;\n            margin-bottom: 15px;\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: normal;\n            font-size: 24px;\n            line-height: 125%;\n            color: #343435;\n            text-align: center;\n}\n.required__text{\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: 600;\n            font-size: 10px;\n            line-height: 125%;\n            color: #F55B69;\n            text-align: center;\n}\n.order__form{\n            width: 100%;\n}\n.order__form__main-row{\n            flex-direction: column;\n            align-items: flex-start;\n            margin-bottom: 0;\n}\n.order__form-input__inner{\n            width: 100%;\n}\n.order__form input{\n            width: 100%;\n            margin-right: 0;\n}\n.order__form textarea{\n            width: 100%;\n}\n.order .cart-btn.home-btn-gray{\n            display: none;\n}\n.order .cart-btn.make-order-btn{\n            margin-right: 0;\n            background: #FF6900;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -50096,69 +50136,27 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "slider__inner" }, [
-      _c("div", { staticClass: "main-slider" }, [
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "main-slider__item" }, [
-          _c("img", {
-            staticClass: "main-slider__item__img",
-            attrs: { src: "/images/slider/slider-1.jpg", alt: "" }
-          })
+  return _c("div", { staticClass: "slider__inner" }, [
+    _c(
+      "div",
+      { staticClass: "main-slider" },
+      _vm._l(this.banners, function(item, index) {
+        return _c("div", { key: index, staticClass: "main-slider__item" }, [
+          _c("a", { attrs: { href: item.link } }, [
+            _c("img", {
+              staticClass: "main-slider__item__img",
+              attrs: { src: item.img, alt: item.name }
+            })
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "slick-slider-dots" })
-    ])
-  }
-]
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "slick-slider-dots" })
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

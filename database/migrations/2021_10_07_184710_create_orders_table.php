@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->string("intercom")->nullable();
             $table->string("korpus")->nullable();
             $table->string("entrance")->nullable();
-            $table->text("comment")->nullbale();
+            $table->text("comment")->nullable();
             $table->boolean("callback")->nullable();
             $table->timestamps();
         });
