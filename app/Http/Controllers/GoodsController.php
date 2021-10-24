@@ -27,4 +27,13 @@ class GoodsController extends Controller
         	'goods' => $goods
         ]);
     }
+
+    public function create() {
+        return view('goods.create');
+    }
+
+    public function createPost(Request $request) {
+        
+        return view('goods.create');
+    }
 }

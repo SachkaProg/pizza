@@ -43,10 +43,10 @@
 
                         </div>
                     </div>
-
+                    <input v-model="popular" type="text" name="popular" placeholder="Популярные? 1:0">
                     <input v-model="pizzaPrice" type="text" name="price" placeholder="Цена">
                     <input @change="handleFileUpload" ref="file" type="file">
-
+                    <input type="checkbox" >
                     <div @click="createPizza()" >сделать</div>
                 </form>
 
@@ -79,7 +79,7 @@
                         Заказать
                     </div>
                 </div>
-
+                
             </div>
 
 
@@ -122,6 +122,7 @@ export default {
         refreshPage: false,
 
 
+        popular: '',
 
         file: '',
         pizzas: [],
@@ -161,12 +162,14 @@ export default {
 
             formData.append('price', this.pizzaPrice);
 
+            formData.append('popular', this.popular);
 
             this.ingradientsPrice = this.ingradientsPrice.map((i)=>(i? i: null));
             formData.append('ing_price', JSON.stringify(this.ingradientsPrice));
 
             this.pizzaPossibleAdds = this.pizzaPossibleAdds.map((i)=>(i? i: null));
             formData.append('possibleAds', JSON.stringify(this.pizzaPossibleAdds));
+            
 
             this.ingradientsTitles = this.ingradientsTitles.map((i)=>(i? i: null));
             this.ingradientsNullable = this.ingradientsNullable.map((i)=>(i? i: null));

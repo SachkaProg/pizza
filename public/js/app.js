@@ -4386,6 +4386,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       pizzaPrice: 0,
       pizzaPossibleAdds: [],
       refreshPage: false,
+      popular: '',
       file: '',
       pizzas: [],
       additions: []
@@ -4419,6 +4420,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       formData.append('name', this.pizzaName);
       formData.append('img', this.file);
       formData.append('price', this.pizzaPrice);
+      formData.append('popular', this.popular);
       this.ingradientsPrice = this.ingradientsPrice.map(function (i) {
         return i ? i : null;
       });
@@ -52060,6 +52062,31 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
+                        value: _vm.popular,
+                        expression: "popular"
+                      }
+                    ],
+                    attrs: {
+                      type: "text",
+                      name: "popular",
+                      placeholder: "Популярные? 1:0"
+                    },
+                    domProps: { value: _vm.popular },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.popular = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
                         value: _vm.pizzaPrice,
                         expression: "pizzaPrice"
                       }
@@ -52081,6 +52108,8 @@ var render = function() {
                     attrs: { type: "file" },
                     on: { change: _vm.handleFileUpload }
                   }),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox" } }),
                   _vm._v(" "),
                   _c(
                     "div",

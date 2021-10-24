@@ -30,7 +30,9 @@ Route::get('/pizza/delete', [App\Http\Controllers\PizzaController::class, 'delet
 Route::get('/pizza/update', [App\Http\Controllers\PizzaController::class, 'delete'] )->name('pizzaUpdate');
 
 
-Route::get('/goods/list', [App\Http\Controllers\GoodsController::class, 'list'] )->name('goodsList');;
+Route::get('/goods/list', [App\Http\Controllers\GoodsController::class, 'list'] )->name('goodsList');
+Route::get('/goods/create', [App\Http\Controllers\GoodsController::class, 'create'] )->name('goodscreate');
+Route::get('/goods/update', [App\Http\Controllers\GoodsController::class, 'create'] )->name('goodupdate');
 Route::get('/goods/delete', [App\Http\Controllers\PizzaController::class, 'delete'] )->name('goodDelete');
 
 
