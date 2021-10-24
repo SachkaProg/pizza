@@ -24,22 +24,32 @@ class OrderController extends Controller
         $callback = $request->input("callback");
 
 
-        $order = Order::create([
-            'order' => $order,
-            'status' => 'active',
-            'total' => $total,
-            'name' => $name,
-            'phone' => $phone,
-            'city' => $city,
-            'house' => $house,
-            'apartment' => $apartment,
-            'floor' => $floor,
-            'intercom' => $intercom,
-            'korpus' => $korpus,
-            'entrance' => $entrance,
-            'comment' => $comment,
-            'callback' => (int) $callback,
-        ]);
+
+
+        try {
+            $order = Order::create([
+                'order' => $order,
+                'status' => 'active',
+                'total' => $total,
+                'name' => $name,
+                'phone' => $phone,
+                'city' => $city,
+                'house' => $house,
+                'apartment' => $apartment,
+                'floor' => $floor,
+                'intercom' => $intercom,
+                'korpus' => $korpus,
+                'entrance' => $entrance,
+                'comment' => $comment,
+                'callback' => (int) $callback,
+            ]);
+        }
+        catch (exception $e){
+            return [
+                "status" => $e->getMessage()
+            ];
+
+        }
 
 
         return [

@@ -196,7 +196,7 @@ export default {
             axios.post('/api/delete-banner', {id}, {
                 headers: {
                     'Authorization': 'Bearer '+ window.Laravel.api_token,
-                    "Content-type": "multi-part/form-data"
+
                 }
             })
             .then((res)=>{
@@ -262,7 +262,7 @@ export default {
 
     .banners__list-item__img{
         width: 300px;
-        height: 300px;
+
     }
 
     .banners__list button{

@@ -1,13 +1,13 @@
 <template>
     <div class="slider__inner">
         <div class="main-slider">
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
-            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>
+            <div v-for="(item,index) in this.banners" :key="index" class="main-slider__item"><a :href="item.link"><img class="main-slider__item__img" :src="item.img" :alt="item.name"></a></div>
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
+<!--            <div class="main-slider__item"><img class="main-slider__item__img" src="/images/slider/slider-1.jpg" alt=""></div>-->
         </div>
         <div class="slick-slider-dots"></div>
     </div>
@@ -41,8 +41,58 @@
 
 
 export default {
-  name: 'MainSlider',
+    name: 'MainSlider',
+    data: () => ({
+        banners: [],
 
+    }),
+    mounted() {
+        this.loadBanners();
+
+
+
+    },
+    methods: {
+
+        loadBanners() {
+            axios.get('api/get-banners')
+                .then(res => {
+                    this.banners = res.data;
+                    console.log(res.data);
+                    setTimeout(()=>{
+                        $('.main-slider').slick("unslick");
+                        $('.main-slider').not('.slick-initialized').slick({
+                            slidesToShow: 1,
+                            centerMode: true,
+                            centerPadding: '60px',
+                            variableWidth: true,
+                            dots: true,
+                            appendDots: $('.slick-slider-dots'),
+                            arrows: false,
+                            infinite: true,
+                            speed: 1000,
+                            autoplay: true,
+                            autoplaySpeed: 3000,
+                            responsive: [
+                                {
+                                    breakpoint: 375,
+                                    settings: {
+                                        dots: false
+                                    }
+                                },
+                            ],
+                        });
+                    }, 0);
+
+
+                })
+        },
+
+
+
+
+
+    }
 }
 </script>
 
