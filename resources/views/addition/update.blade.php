@@ -15,6 +15,10 @@
 		<input value="{{$souce->price}}" type="text" name="price">
 	</p>
 	<p>
+		<span>Количество</span><br>
+		<input value="{{$souce->quantity}}" type="text" name="quantity">
+	</p>
+	<p>
 		<span>Фото</span><br>
 		<input type="file" name="img">
 	</p>

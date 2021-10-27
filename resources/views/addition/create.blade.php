@@ -17,6 +17,10 @@
 		<span>Фото</span><br>
 		<input type="file" name="img">
 	</p>
+	<p>
+		<span>Количество</span><br>
+		<input type="text" name="quantity">
+	</p>
 	
 	<button style="margin: 10px;" type="submit" class="btn btn-primary">Сохранить</button>
 </form>

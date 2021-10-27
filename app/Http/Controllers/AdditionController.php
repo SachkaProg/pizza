@@ -75,6 +75,7 @@ class AdditionController extends Controller
         $good = new Addition;
         $good->name = $request->name;
         $good->price = $request->price;
+        $good->quantity = $request->quantity;
         $good->img = $path;
         $good->save();
 
@@ -101,6 +102,7 @@ class AdditionController extends Controller
         Addition::where('id', $request->id)->update([
             'name' => $request->name,
             'price' => $request->price,
+            'quantity' => $request->quantity,
             'img'  => $path
         ]);
         
