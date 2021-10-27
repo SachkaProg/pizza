@@ -12,6 +12,7 @@ import OrderSuccess from './views/OrderSuccess.vue'
 
 import AdminOrders from './views/AdminOrders.vue'
 import AdminCreatePizza from './views/AdminCreatePizza.vue'
+import AdminEditPizza from './views/AdminEditPizza.vue'
 import AdminCreateAddition from './views/AdminCreateAddition.vue'
 import AdminBanners from './views/AdminBanners.vue'
 
@@ -45,6 +46,14 @@ const router = new vueRouter({
           meta: {
             role: "admin",
           },
+        },
+        {
+            path: '/admin-edit-pizza',
+            name: 'admin-edit-pizza',
+            component: AdminEditPizza,
+            meta: {
+              role: "admin",
+            },
         },
         {
           path: '/admin-create-addition',

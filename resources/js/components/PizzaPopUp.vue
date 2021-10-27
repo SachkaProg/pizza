@@ -30,37 +30,37 @@
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Энерг. ценность</p>
-                                    <p>{{pizza_data.components.comp1}}</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp1}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__proteins
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Белки</p>
-                                    <p>1231</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp2}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__fats
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Жиры</p>
-                                    <p>123</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp3}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__carbonhydrates
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Углеводы</p>
-                                    <p>123</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp4}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__weight
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Вес</p>
-                                    <p>123</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp5}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__diameter
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Диаметр</p>
-                                    <p>123</p>
+                                    <p>{{pizza_data.components && pizza_data.components.comp6}}</p>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +164,7 @@ export default {
     computed: {
         itemTotalPrice(){
             let result = [];
-
+            console.log(this.pizza_data);
             result.push(Number(this.pizza_data.price));
 
             if (this.cartItem.additions.length) {

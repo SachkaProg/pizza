@@ -2950,7 +2950,8 @@ __webpack_require__.r(__webpack_exports__);
           el.composition = JSON.parse(el.composition);
           el.possibleAds = JSON.parse(el.possibleAds);
           el.components = JSON.parse(el.components);
-          console.log(el.components.comp1);
+          console.log("FASFASFASFASFASFAS");
+          console.log(el.components);
           el.created_at = _this.getDate(+Date.parse(el.created_at));
           el.created_date = new Date(+Date.parse(el.created_at));
         });
@@ -3229,6 +3230,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   computed: {
     itemTotalPrice: function itemTotalPrice() {
       var result = [];
+      console.log(this.pizza_data);
       result.push(Number(this.pizza_data.price));
 
       if (this.cartItem.additions.length) {
@@ -4410,6 +4412,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4422,11 +4426,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       ingradientsNumber: 1,
       newIngradients: [1],
       ingradientsTitles: [""],
-      ingradientsNullable: [],
+      ingradientsNullable: [false],
       ingradientsPrice: [],
       pizzaName: '',
-      pizzaPrice: 0,
+      pizzaPrice: undefined,
       pizzaPossibleAdds: [],
+      creationError: false,
       refreshPage: false,
       popular: '',
       file: '',
@@ -4441,11 +4446,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   methods: {
     stepUpStage: function stepUpStage() {
       this.ingradientsNumber++;
+      this.ingradientsNullable.push(false);
       this.addStages();
     },
     stepDownStage: function stepDownStage() {
       if (this.ingradientsNumber == 1) return;
       this.ingradientsNumber--;
+      this.ingradientsNullable.pop();
       this.addStages();
     },
     addStages: function addStages() {
@@ -4458,6 +4465,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.refresh();
     },
     createPizza: function createPizza() {
+      var _this = this;
+
       var formData = new FormData();
       formData.append('name', this.pizzaName);
       formData.append('img', this.file);
@@ -4471,9 +4480,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return i ? i : null;
       });
       formData.append('possibleAds', JSON.stringify(this.pizzaPossibleAdds));
-      this.ingradientsTitles = this.ingradientsTitles.map(function (i) {
-        return i ? i : null;
-      });
       this.ingradientsNullable = this.ingradientsNullable.map(function (i) {
         return i ? i : null;
       });
@@ -4484,6 +4490,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           'Authorization': 'Bearer ' + window.Laravel.api_token,
           "Content-type": "multi-part/form-data"
         }
+      }).then(function (res) {
+        console.log(res.data);
+        window.location.href = "/admin";
+      })["catch"](function (err) {
+        _this.creationError = true;
       }); // .then(res => {
       //     console.log(JSON.parse(res.request.response));
       //     this.$refs.form.reset();
@@ -4521,29 +4532,336 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return dd + '.' + mm + '.' + yy;
     },
     loadPizza: function loadPizza() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('api/get-pizza').then(function (res) {
-        console.log(_this.pizzas);
-        _this.pizzas = res.data;
+        console.log(_this2.pizzas);
+        _this2.pizzas = res.data;
         console.log(res.data);
-        console.log(_this.pizzas);
+        console.log(_this2.pizzas);
 
-        _this.pizzas.forEach(function (el) {
+        _this2.pizzas.forEach(function (el) {
           el.composition = JSON.parse(el.composition);
-          el.created_at = _this.getDate(+Date.parse(el.created_at));
+          el.created_at = _this2.getDate(+Date.parse(el.created_at));
           el.created_date = new Date(+Date.parse(el.created_at));
         });
 
-        console.log(_this.pizzas);
+        console.log(_this2.pizzas);
       });
     },
     loadAdditions: function loadAdditions() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('api/get-additions').then(function (res) {
-        _this2.additions = res.data;
-        console.log(_this2.additions);
+        _this3.additions = res.data;
+        console.log(_this3.additions);
+      });
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
+    addAdditionToPizza: function addAdditionToPizza(name, event) {
+      if (this.pizzaPossibleAdds.includes(name)) {
+        this.pizzaPossibleAdds.splice(this.pizzaPossibleAdds.indexOf(name), 1);
+        event.target.closest('.pizza__pop-up__ingradients-item').classList.toggle('active');
+      } else {
+        this.pizzaPossibleAdds.push(name);
+        event.target.closest('.pizza__pop-up__ingradients-item').classList.toggle('active');
+      }
+
+      console.log(this.pizzaPossibleAdds); // console.log(event.target.closest('.pizza__pop-up__ingradients-item'));
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_PizzaItem_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/PizzaItem.vue */ "./resources/js/components/PizzaItem.vue");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//////////////////////////////////////////////////////////////                  $route.params.id
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'AdminCreatePizza',
+  components: {
+    PizzaItem: _components_PizzaItem_vue__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      ingradientsNumber: 1,
+      newIngradients: [1],
+      ingradientsTitles: [""],
+      ingradientsNullable: [false],
+      ingradientsPrice: [],
+      pizzaName: '',
+      pizzaPrice: undefined,
+      pizzaPossibleAdds: [],
+      creationError: false,
+      refreshPage: false,
+      popular: '',
+      file: '',
+      pizzas: [],
+      additions: []
+    };
+  },
+  mounted: function mounted() {
+    this.loadPizza();
+    this.loadAdditions();
+  },
+  methods: {
+    stepUpStage: function stepUpStage() {
+      this.ingradientsNumber++;
+      this.ingradientsNullable.push(false);
+      this.addStages();
+    },
+    stepDownStage: function stepDownStage() {
+      if (this.ingradientsNumber == 1) return;
+      this.ingradientsNumber--;
+      this.ingradientsNullable.pop();
+      this.addStages();
+    },
+    addStages: function addStages() {
+      this.newIngradients = [];
+
+      for (var i = 1; i <= this.ingradientsNumber; ++i) {
+        this.newIngradients.push(i);
+      }
+
+      this.refresh();
+    },
+    editPizza: function editPizza() {
+      var _this = this;
+
+      var formData = new FormData();
+      formData.append('id', this.pizza.id);
+      formData.append('name', this.pizzaName);
+      formData.append('img', this.file);
+      formData.append('price', this.pizzaPrice);
+      formData.append('popular', this.popular);
+      this.ingradientsPrice = this.ingradientsPrice.map(function (i) {
+        return i ? i : null;
+      });
+      formData.append('ing_price', JSON.stringify(this.ingradientsPrice));
+      this.pizzaPossibleAdds = this.pizzaPossibleAdds.map(function (i) {
+        return i ? i : null;
+      });
+      formData.append('possibleAds', JSON.stringify(this.pizzaPossibleAdds));
+      this.ingradientsNullable = this.ingradientsNullable.map(function (i) {
+        return i ? i : null;
+      });
+      formData.append('ing_titles', JSON.stringify(this.ingradientsTitles));
+      formData.append('ing_nullable', JSON.stringify(this.ingradientsNullable));
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('api/edit-pizza', formData, {
+        headers: {
+          'Authorization': 'Bearer ' + window.Laravel.api_token,
+          "Content-type": "multi-part/form-data"
+        }
+      }).then(function (res) {
+        console.log(res.data);
+        window.location.href = "/admin";
+      })["catch"](function (err) {
+        _this.creationError = true;
+      }); // .then(res => {
+      //     console.log(JSON.parse(res.request.response));
+      //     this.$refs.form.reset();
+      // });
+      // console.log(formData);
+
+      var _iterator = _createForOfIteratorHelper(formData.entries()),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var pair = _step.value;
+          console.log(pair[0] + ', ' + pair[1]);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      this.refresh();
+    },
+    refresh: function refresh() {
+      this.refreshPage = true;
+      this.refreshPage = false;
+    },
+    getDate: function getDate(arg) {
+      var date = new Date(arg);
+      var dd = date.getDate();
+      if (dd < 10) dd = '0' + dd;
+      var mm = date.getMonth() + 1;
+      if (mm < 10) mm = '0' + mm;
+      var yy = date.getFullYear() % 100;
+      if (yy < 10) yy = '0' + yy;
+      return dd + '.' + mm + '.' + yy;
+    },
+    loadPizza: function loadPizza() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('api/get-pizza').then(function (res) {
+        console.log(_this2.pizzas);
+        _this2.pizzas = res.data;
+        console.log(res.data);
+        console.log(_this2.pizzas);
+
+        _this2.pizzas.forEach(function (el) {
+          el.composition = JSON.parse(el.composition);
+          el.created_at = _this2.getDate(+Date.parse(el.created_at));
+          el.created_date = new Date(+Date.parse(el.created_at));
+        });
+
+        var id = new URL(window.location.href).searchParams.get("id");
+        _this2.pizza = _this2.pizzas.find(function (p) {
+          return p.id == id;
+        });
+        console.log(_this2.pizza);
+        _this2.pizzaName = _this2.pizza.name;
+        _this2.pizzaPrice = _this2.pizza.price;
+        _this2.popular = _this2.pizza.popular;
+        _this2.pizzaPossibleAdds = JSON.parse(_this2.pizza.possibleAds);
+        _this2.ingradientsNumber = _this2.pizza.composition.length;
+
+        _this2.addStages();
+
+        for (var i = 0; i < _this2.ingradientsNumber; ++i) {
+          _this2.ingradientsTitles[i] = _this2.pizza.composition[i].ingradient;
+          _this2.ingradientsNullable[i] = +_this2.pizza.composition[i].nullable;
+          _this2.ingradientsPrice[i] = _this2.pizza.composition[i].price;
+        }
+      });
+    },
+    loadAdditions: function loadAdditions() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('api/get-additions').then(function (res) {
+        _this3.additions = res.data;
+        setTimeout(function () {
+          _this3.pizzaPossibleAdds.forEach(function (el) {
+            document.querySelector("[additionname=\"".concat(el, "\"]")).classList.add('active');
+          });
+        }, 10);
+        console.log(_this3.additions);
       });
     },
     handleFileUpload: function handleFileUpload() {
@@ -6050,11 +6368,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_OrderSuccess_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./views/OrderSuccess.vue */ "./resources/js/views/OrderSuccess.vue");
 /* harmony import */ var _views_AdminOrders_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./views/AdminOrders.vue */ "./resources/js/views/AdminOrders.vue");
 /* harmony import */ var _views_AdminCreatePizza_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./views/AdminCreatePizza.vue */ "./resources/js/views/AdminCreatePizza.vue");
-/* harmony import */ var _views_AdminCreateAddition_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./views/AdminCreateAddition.vue */ "./resources/js/views/AdminCreateAddition.vue");
-/* harmony import */ var _views_AdminBanners_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./views/AdminBanners.vue */ "./resources/js/views/AdminBanners.vue");
+/* harmony import */ var _views_AdminEditPizza_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./views/AdminEditPizza.vue */ "./resources/js/views/AdminEditPizza.vue");
+/* harmony import */ var _views_AdminCreateAddition_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./views/AdminCreateAddition.vue */ "./resources/js/views/AdminCreateAddition.vue");
+/* harmony import */ var _views_AdminBanners_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./views/AdminBanners.vue */ "./resources/js/views/AdminBanners.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_1__.default); // import Example from './components/ExampleComponent'
+
 
 
 
@@ -6090,9 +6410,16 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
       role: "admin"
     }
   }, {
+    path: '/admin-edit-pizza',
+    name: 'admin-edit-pizza',
+    component: _views_AdminEditPizza_vue__WEBPACK_IMPORTED_MODULE_8__.default,
+    meta: {
+      role: "admin"
+    }
+  }, {
     path: '/admin-create-addition',
     name: 'admin-create-addition',
-    component: _views_AdminCreateAddition_vue__WEBPACK_IMPORTED_MODULE_8__.default,
+    component: _views_AdminCreateAddition_vue__WEBPACK_IMPORTED_MODULE_9__.default,
     meta: {
       role: "admin"
     }
@@ -6106,7 +6433,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
   }, {
     path: '/admin-banners',
     name: 'admin-banners',
-    component: _views_AdminBanners_vue__WEBPACK_IMPORTED_MODULE_9__.default,
+    component: _views_AdminBanners_vue__WEBPACK_IMPORTED_MODULE_10__.default,
     meta: {
       role: "admin"
     }
@@ -11004,7 +11331,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px){\n.container{\n        padding: 0 15px;\n}\n.mob-hide{\n        display: none;\n}\n.logo img{\n        width: 50px;\n        height: 50px;\n}\n.header-block{\n        font-size: 15px;\n        line-height: 125%;\n}\n.menu-burger{\n        display: flex;\n}\n}\n@media(max-width: 375px){\n.container{\n        padding: 0 15px;\n}\n.mob-hide{\n        display: none;\n}\n.logo img{\n        width: 50px;\n        height: 50px;\n}\n.header-block{\n        font-size: 15px;\n        line-height: 125%;\n}\n.menu-burger{\n        display: flex;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px){\n.container{\r\n        padding: 0 15px;\n}\n.mob-hide{\r\n        display: none;\n}\n.logo img{\r\n        width: 50px;\r\n        height: 50px;\n}\n.header-block{\r\n        font-size: 15px;\r\n        line-height: 125%;\n}\n.menu-burger{\r\n        display: flex;\n}\n}\n@media(max-width: 375px){\n.container{\r\n        padding: 0 15px;\n}\n.mob-hide{\r\n        display: none;\n}\n.logo img{\r\n        width: 50px;\r\n        height: 50px;\n}\n.header-block{\r\n        font-size: 15px;\r\n        line-height: 125%;\n}\n.menu-burger{\r\n        display: flex;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11076,7 +11403,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.back-arrow--mob{\n    display: none;\n    width: 55px;\n    height: 55px;\n    border-radius: 50%;\n\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    background: #FFFFFF;\n    box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.15);\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.back-arrow--mob{\r\n    display: none;\r\n    width: 55px;\r\n    height: 55px;\r\n    border-radius: 50%;\r\n\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n\r\n    background: #FFFFFF;\r\n    box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.15);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11100,7 +11427,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 1000px) {\n.back-arrow--mob{\n        display: flex;\n}\n.header__cart__inner .order-steps{\n        display: none;\n}\n.header__cart{\n        border-bottom: none;\n}\n.header__cart__inner{\n        padding-right: 15px;\n}\n}\n@media(max-width: 767px) {\n.back-arrow--mob{\n        display: flex;\n}\n.header__cart__inner .order-steps{\n        display: none;\n}\n.header__cart{\n        border-bottom: none;\n}\n.header__cart__inner{\n        padding-right: 15px;\n}\n}\n@media(max-width: 630px) {\n.back-arrow--mob{\n        display: flex;\n}\n.header__cart__main-wrapper .header__cart-block,\n    .header__cart__inner .order-steps{\n        display: none;\n}\n.header__cart{\n        border-bottom: none;\n}\n.header__cart__inner{\n        padding-right: 15px;\n}\n}\n@media(max-width: 375px) {\n.back-arrow--mob{\n            display: flex;\n}\n.header__cart__main-wrapper .header__cart-block,\n        .header__cart__inner .order-steps{\n            display: none;\n}\n.header__cart{\n            border-bottom: none;\n}\n.header__cart__inner{\n            padding-right: 15px;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 1000px) {\n.back-arrow--mob{\r\n        display: flex;\n}\n.header__cart__inner .order-steps{\r\n        display: none;\n}\n.header__cart{\r\n        border-bottom: none;\n}\n.header__cart__inner{\r\n        padding-right: 15px;\n}\n}\n@media(max-width: 767px) {\n.back-arrow--mob{\r\n        display: flex;\n}\n.header__cart__inner .order-steps{\r\n        display: none;\n}\n.header__cart{\r\n        border-bottom: none;\n}\n.header__cart__inner{\r\n        padding-right: 15px;\n}\n}\n@media(max-width: 630px) {\n.back-arrow--mob{\r\n        display: flex;\n}\n.header__cart__main-wrapper .header__cart-block,\r\n    .header__cart__inner .order-steps{\r\n        display: none;\n}\n.header__cart{\r\n        border-bottom: none;\n}\n.header__cart__inner{\r\n        padding-right: 15px;\n}\n}\n@media(max-width: 375px) {\n.back-arrow--mob{\r\n            display: flex;\n}\n.header__cart__main-wrapper .header__cart-block,\r\n        .header__cart__inner .order-steps{\r\n            display: none;\n}\n.header__cart{\r\n            border-bottom: none;\n}\n.header__cart__inner{\r\n            padding-right: 15px;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11820,7 +12147,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.admin-create__pizza__form[data-v-aad4e688]{\n    margin-bottom: 100px;\n}\n.pizza__pop-up__ingradients-item.active[data-v-aad4e688]{\n    border: 2px solid green;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.admin-create__pizza__form[data-v-aad4e688]{\n    margin-bottom: 100px;\n}\n.pizza__pop-up__ingradients-item.active[data-v-aad4e688]{\n    border: 2px solid green;\n}\n.admin-create__pizza__form_error[data-v-aad4e688]{\n    color:red;\n    font-weight: bold;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11844,7 +12171,55 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.pizza-item__desc__ingradient{\n    display: inline;\n}\n.pizza-item__desc__ingradient::after{\n    content: ',';\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 10px;\n    line-height: 110%;\n    /* or 11px */\n    color: #B0B0B0;\n}\n.pizza-item__desc__ingradient:last-child::after{\n    display: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pizza-item__desc__ingradient{\n    display: inline;\n}\n.pizza-item__desc__ingradient::after{\n    content: ',';\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 10px;\n    line-height: 110%;\n    /* or 11px */\n    color: #B0B0B0;\n}\n.pizza-item__desc__ingradient:last-child::after{\n    display: none;\n}\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.admin-edit__pizza__form[data-v-4176fd6e]{\n    margin-bottom: 100px;\n}\n.pizza__pop-up__ingradients-item.active[data-v-4176fd6e]{\n    border: 2px solid green;\n}\n.admin-edit__pizza__form_error[data-v-4176fd6e]{\n    color:red;\n    font-weight: bold;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pizza-item__desc__ingradient{\n    display: inline;\n}\n.pizza-item__desc__ingradient::after{\n    content: ',';\n    font-family: Open Sans;\n    font-style: normal;\n    font-weight: normal;\n    font-size: 10px;\n    line-height: 110%;\n    /* or 11px */\n    color: #B0B0B0;\n}\n.pizza-item__desc__ingradient:last-child::after{\n    display: none;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12420,7 +12795,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.order-success .cart-btn.back-btn.mb60{\n        max-width: 300px;\n}\n.order-success .header__cart__inner{\n        padding-right: 0;\n}\n.order-success__title{\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: normal;\n        font-size: 24px;\n        line-height: 125%;\n        color: #343435;\n}\n.order-success__img,\n    .order-success__img-img{\n        width: 265px;\n        height: 240px;\n}\n.order-success__text{\n        font-family: Open Sans;\n        font-style: normal;\n        font-weight: normal;\n        font-size: 15px;\n        line-height: 125%;\n        text-align: center;\n        color: #343435;\n}\n.order-success .cart-btn.back-btn.mb60 {\n        justify-content: center;\n        width: 100%;\n        background: #FF6900;\n}\n.order-success .cart-btn.back-btn.mb60 .cart-btn__arrow{\n        display: none;\n}\n}\n@media(max-width: 375px) {\n.order-success .header__cart__inner{\n            padding-right: 0;\n}\n.order-success__title{\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: normal;\n            font-size: 24px;\n            line-height: 125%;\n            color: #343435;\n}\n.order-success__img,\n        .order-success__img-img{\n            width: 265px;\n            height: 240px;\n}\n.order-success__text{\n            font-family: Open Sans;\n            font-style: normal;\n            font-weight: normal;\n            font-size: 15px;\n            line-height: 125%;\n            text-align: center;\n            color: #343435;\n}\n.order-success .cart-btn.back-btn.mb60 {\n            justify-content: center;\n            width: 100%;\n            background: #FF6900;\n}\n.order-success .cart-btn.back-btn.mb60 .cart-btn__arrow{\n            display: none;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media(max-width: 767px) {\n.order-success .cart-btn.back-btn.mb60{\r\n        max-width: 300px;\n}\n.order-success .header__cart__inner{\r\n        padding-right: 0;\n}\n.order-success__title{\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: normal;\r\n        font-size: 24px;\r\n        line-height: 125%;\r\n        color: #343435;\n}\n.order-success__img,\r\n    .order-success__img-img{\r\n        width: 265px;\r\n        height: 240px;\n}\n.order-success__text{\r\n        font-family: Open Sans;\r\n        font-style: normal;\r\n        font-weight: normal;\r\n        font-size: 15px;\r\n        line-height: 125%;\r\n        text-align: center;\r\n        color: #343435;\n}\n.order-success .cart-btn.back-btn.mb60 {\r\n        justify-content: center;\r\n        width: 100%;\r\n        background: #FF6900;\n}\n.order-success .cart-btn.back-btn.mb60 .cart-btn__arrow{\r\n        display: none;\n}\n}\n@media(max-width: 375px) {\n.order-success .header__cart__inner{\r\n            padding-right: 0;\n}\n.order-success__title{\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: normal;\r\n            font-size: 24px;\r\n            line-height: 125%;\r\n            color: #343435;\n}\n.order-success__img,\r\n        .order-success__img-img{\r\n            width: 265px;\r\n            height: 240px;\n}\n.order-success__text{\r\n            font-family: Open Sans;\r\n            font-style: normal;\r\n            font-weight: normal;\r\n            font-size: 15px;\r\n            line-height: 125%;\r\n            text-align: center;\r\n            color: #343435;\n}\n.order-success .cart-btn.back-btn.mb60 {\r\n            justify-content: center;\r\n            width: 100%;\r\n            background: #FF6900;\n}\n.order-success .cart-btn.back-btn.mb60 .cart-btn__arrow{\r\n            display: none;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -44945,6 +45320,66 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_0_id_4176fd6e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_0_id_4176fd6e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_0_id_4176fd6e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=style&index=1&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminOrders.vue?vue&type=style&index=0&id=38d9d0c5&scoped=true&lang=css&":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminOrders.vue?vue&type=style&index=0&id=38d9d0c5&scoped=true&lang=css& ***!
@@ -46941,6 +47376,49 @@ component.options.__file = "resources/js/views/AdminCreatePizza.vue"
 
 /***/ }),
 
+/***/ "./resources/js/views/AdminEditPizza.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/views/AdminEditPizza.vue ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true& */ "./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true&");
+/* harmony import */ var _AdminEditPizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdminEditPizza.vue?vue&type=script&lang=js& */ "./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js&");
+/* harmony import */ var _AdminEditPizza_vue_vue_type_style_index_0_id_4176fd6e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& */ "./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&");
+/* harmony import */ var _AdminEditPizza_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AdminEditPizza.vue?vue&type=style&index=1&lang=css& */ "./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__.default)(
+  _AdminEditPizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "4176fd6e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/AdminEditPizza.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/views/AdminOrders.vue":
 /*!********************************************!*\
   !*** ./resources/js/views/AdminOrders.vue ***!
@@ -47549,6 +48027,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCreatePizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminCreatePizza.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminCreatePizza.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCreatePizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -48282,6 +48776,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_0_id_4176fd6e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=0&id=4176fd6e&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=style&index=1&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=style&index=1&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/views/AdminOrders.vue?vue&type=style&index=0&id=38d9d0c5&scoped=true&lang=css&":
 /*!*****************************************************************************************************!*\
   !*** ./resources/js/views/AdminOrders.vue?vue&type=style&index=0&id=38d9d0c5&scoped=true&lang=css& ***!
@@ -48981,6 +49501,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCreatePizza_vue_vue_type_template_id_aad4e688_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCreatePizza_vue_vue_type_template_id_aad4e688_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminCreatePizza.vue?vue&type=template&id=aad4e688&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminCreatePizza.vue?vue&type=template&id=aad4e688&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminEditPizza_vue_vue_type_template_id_4176fd6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true&");
 
 
 /***/ }),
@@ -50549,20 +51086,115 @@ var render = function() {
                         _c("p", [_vm._v("Энерг. ценность")]),
                         _vm._v(" "),
                         _c("p", [
-                          _vm._v(_vm._s(_vm.pizza_data.components.comp1))
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp1
+                            )
+                          )
                         ])
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(0),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__info-nutritive__content__proteins\n                            pizza__pop-up__info-nutritive__content__block\n                            "
+                      },
+                      [
+                        _c("p", [_vm._v("Белки")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp2
+                            )
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__info-nutritive__content__fats\n                            pizza__pop-up__info-nutritive__content__block\n                            "
+                      },
+                      [
+                        _c("p", [_vm._v("Жиры")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp3
+                            )
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _vm._m(2),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__info-nutritive__content__carbonhydrates\n                            pizza__pop-up__info-nutritive__content__block\n                            "
+                      },
+                      [
+                        _c("p", [_vm._v("Углеводы")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp4
+                            )
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _vm._m(3),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__info-nutritive__content__weight\n                            pizza__pop-up__info-nutritive__content__block\n                            "
+                      },
+                      [
+                        _c("p", [_vm._v("Вес")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp5
+                            )
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _vm._m(4)
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__info-nutritive__content__diameter\n                            pizza__pop-up__info-nutritive__content__block\n                            "
+                      },
+                      [
+                        _c("p", [_vm._v("Диаметр")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.pizza_data.components &&
+                                _vm.pizza_data.components.comp6
+                            )
+                          )
+                        ])
+                      ]
+                    )
                   ]
                 )
               ]
@@ -50686,73 +51318,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pizza__pop-up__info-nutritive__content__proteins\n                            pizza__pop-up__info-nutritive__content__block\n                            "
-      },
-      [_c("p", [_vm._v("Белки")]), _vm._v(" "), _c("p", [_vm._v("1231")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pizza__pop-up__info-nutritive__content__fats\n                            pizza__pop-up__info-nutritive__content__block\n                            "
-      },
-      [_c("p", [_vm._v("Жиры")]), _vm._v(" "), _c("p", [_vm._v("123")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pizza__pop-up__info-nutritive__content__carbonhydrates\n                            pizza__pop-up__info-nutritive__content__block\n                            "
-      },
-      [_c("p", [_vm._v("Углеводы")]), _vm._v(" "), _c("p", [_vm._v("123")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pizza__pop-up__info-nutritive__content__weight\n                            pizza__pop-up__info-nutritive__content__block\n                            "
-      },
-      [_c("p", [_vm._v("Вес")]), _vm._v(" "), _c("p", [_vm._v("123")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pizza__pop-up__info-nutritive__content__diameter\n                            pizza__pop-up__info-nutritive__content__block\n                            "
-      },
-      [_c("p", [_vm._v("Диаметр")]), _vm._v(" "), _c("p", [_vm._v("123")])]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51819,7 +52385,7 @@ var render = function() {
       { staticClass: "container" },
       [
         _c("h3", { staticClass: "h-heading" }, [
-          _vm._v("\n            Пицца\n        ")
+          _vm._v("\n            Создание пиццы\n        ")
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pizza new__inner" }, [
@@ -51938,7 +52504,7 @@ var render = function() {
                             }
                           }
                         }),
-                        _vm._v(" "),
+                        _vm._v("\n                    Можно убрать "),
                         _c("input", {
                           directives: [
                             {
@@ -51948,22 +52514,43 @@ var render = function() {
                               expression: "ingradientsNullable[i-1]"
                             }
                           ],
-                          attrs: {
-                            type: "text",
-                            name: "nullable",
-                            placeholder: "Можно убрать? 1:0"
+                          attrs: { type: "checkbox", name: "nullable" },
+                          domProps: {
+                            checked: Array.isArray(
+                              _vm.ingradientsNullable[i - 1]
+                            )
+                              ? _vm._i(_vm.ingradientsNullable[i - 1], null) >
+                                -1
+                              : _vm.ingradientsNullable[i - 1]
                           },
-                          domProps: { value: _vm.ingradientsNullable[i - 1] },
                           on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            change: function($event) {
+                              var $$a = _vm.ingradientsNullable[i - 1],
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.ingradientsNullable,
+                                      i - 1,
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.ingradientsNullable,
+                                      i - 1,
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(_vm.ingradientsNullable, i - 1, $$c)
                               }
-                              _vm.$set(
-                                _vm.ingradientsNullable,
-                                i - 1,
-                                $event.target.value
-                              )
                             }
                           }
                         }),
@@ -52072,7 +52659,7 @@ var render = function() {
                       0
                     )
                   ]),
-                  _vm._v(" "),
+                  _vm._v("\n                Популярное "),
                   _c("input", {
                     directives: [
                       {
@@ -52082,18 +52669,31 @@ var render = function() {
                         expression: "popular"
                       }
                     ],
-                    attrs: {
-                      type: "text",
-                      name: "popular",
-                      placeholder: "Популярные? 1:0"
+                    attrs: { type: "checkbox", name: "popular" },
+                    domProps: {
+                      checked: Array.isArray(_vm.popular)
+                        ? _vm._i(_vm.popular, null) > -1
+                        : _vm.popular
                     },
-                    domProps: { value: _vm.popular },
                     on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      change: function($event) {
+                        var $$a = _vm.popular,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 && (_vm.popular = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.popular = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.popular = $$c
                         }
-                        _vm.popular = $event.target.value
                       }
                     }
                   }),
@@ -52127,16 +52727,502 @@ var render = function() {
                   _vm._v(" "),
                   _c("input", { attrs: { type: "checkbox" } }),
                   _vm._v(" "),
+                  _c("br"),
+                  _c("br"),
+                  _vm._v(" "),
+                  _vm.creationError
+                    ? _c(
+                        "div",
+                        { staticClass: "admin-create__pizza__form_error" },
+                        [_vm._v("Ошибка при создании пиццы")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c(
-                    "div",
+                    "button",
                     {
+                      attrs: { type: "button" },
                       on: {
                         click: function($event) {
                           return _vm.createPizza()
                         }
                       }
                     },
-                    [_vm._v("сделать")]
+                    [_vm._v("Создать")]
+                  )
+                ],
+                2
+              )
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.pizzas, function(pizza) {
+          return _c(
+            "div",
+            {
+              key: pizza.id,
+              staticClass: "pizza-item",
+              on: {
+                click: function($event) {
+                  return _vm.pizzaPopUp()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "pizza-item__img" }, [
+                _c("img", {
+                  staticClass: "pizza-item__img-img",
+                  attrs: { src: pizza.img, alt: "" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "pizza-item__discount--new discount" },
+                  [_vm._v("-70%")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "pizza-item__discount--new new" }, [
+                  _vm._v("NEW")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "pizza-item__name" }, [
+                _vm._v(
+                  "\n                " + _vm._s(pizza.name) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "pizza-item__desc" },
+                _vm._l(pizza.composition, function(item, index) {
+                  return _c(
+                    "div",
+                    { key: index, staticClass: "pizza-item__desc__ingradient" },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(item.ingradient) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "pizza-item__price-order" }, [
+                _c("div", { staticClass: "pizza-item__price" }, [
+                  _vm._v(
+                    "\n                    от " +
+                      _vm._s(pizza.price) +
+                      " ₽\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "pizza-item__order" }, [
+                  _vm._v("\n                    Заказать\n                ")
+                ])
+              ])
+            ]
+          )
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/AdminEditPizza.vue?vue&type=template&id=4176fd6e&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "pizza" }, [
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c("h3", { staticClass: "h-heading" }, [
+          _vm._v("\n            Редактирование пиццы\n        ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "pizza new__inner" }, [
+          _vm.refreshPage == false
+            ? _c(
+                "form",
+                { staticClass: "admin-edit__pizza__form" },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.pizzaName,
+                        expression: "pizzaName"
+                      }
+                    ],
+                    attrs: {
+                      type: "text",
+                      name: "name",
+                      placeholder: "Название"
+                    },
+                    domProps: { value: _vm.pizzaName },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.pizzaName = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("h2", [_vm._v("Инградиенты")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "number-buttons" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "number-minus",
+                        attrs: { type: "button" },
+                        on: { click: _vm.stepDownStage }
+                      },
+                      [_vm._v("-")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.ingradientsNumber,
+                          expression: "ingradientsNumber"
+                        }
+                      ],
+                      staticClass: "inner-number",
+                      attrs: { type: "number", min: "1" },
+                      domProps: { value: _vm.ingradientsNumber },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.ingradientsNumber = $event.target.value
+                          },
+                          _vm.addStages
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "number-plus",
+                        attrs: { type: "button" },
+                        on: { click: _vm.stepUpStage }
+                      },
+                      [_vm._v("+")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.newIngradients, function(i) {
+                    return _c(
+                      "div",
+                      { key: i, staticClass: "admin-edit__pizza__composition" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.ingradientsTitles[i - 1],
+                              expression: "ingradientsTitles[i-1]"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            name: "ingradient",
+                            placeholder: "Инградиент"
+                          },
+                          domProps: { value: _vm.ingradientsTitles[i - 1] },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.ingradientsTitles,
+                                i - 1,
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v("\n                    Можно убрать "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.ingradientsNullable[i - 1],
+                              expression: "ingradientsNullable[i-1]"
+                            }
+                          ],
+                          attrs: { type: "checkbox", name: "nullable" },
+                          domProps: {
+                            checked: Array.isArray(
+                              _vm.ingradientsNullable[i - 1]
+                            )
+                              ? _vm._i(_vm.ingradientsNullable[i - 1], null) >
+                                -1
+                              : _vm.ingradientsNullable[i - 1]
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.ingradientsNullable[i - 1],
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.ingradientsNullable,
+                                      i - 1,
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.ingradientsNullable,
+                                      i - 1,
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(_vm.ingradientsNullable, i - 1, $$c)
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.ingradientsPrice[i - 1],
+                              expression: "ingradientsPrice[i-1]"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            name: "ing_price",
+                            placeholder: "Цена инградиента"
+                          },
+                          domProps: { value: _vm.ingradientsPrice[i - 1] },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.ingradientsPrice,
+                                i - 1,
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("h2", [_vm._v("Возможные добавки")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "additions" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pizza__pop-up__ingradients-list adm-add-list"
+                      },
+                      _vm._l(_vm.additions, function(add, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: index,
+                            staticClass: "pizza__pop-up__ingradients-item",
+                            attrs: { additionname: add.name },
+                            on: {
+                              click: function($event) {
+                                return _vm.addAdditionToPizza(add.name, $event)
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "pizza__pop-up__ingradients-item__img"
+                              },
+                              [
+                                _c("img", {
+                                  staticClass:
+                                    "pizza__pop-up__ingradients-item__img-img",
+                                  attrs: { src: add.img, alt: "" }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "pizza__pop-up__ingradients-item__name"
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(add.name) +
+                                    "\n                            "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "pizza__pop-up__ingradients-item__price"
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(add.price) +
+                                    " ₽\n                            "
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v("\n                Популярное "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.popular,
+                        expression: "popular"
+                      }
+                    ],
+                    attrs: { type: "checkbox", name: "popular" },
+                    domProps: {
+                      checked: Array.isArray(_vm.popular)
+                        ? _vm._i(_vm.popular, null) > -1
+                        : _vm.popular
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.popular,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 && (_vm.popular = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.popular = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.popular = $$c
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.pizzaPrice,
+                        expression: "pizzaPrice"
+                      }
+                    ],
+                    attrs: { type: "text", name: "price", placeholder: "Цена" },
+                    domProps: { value: _vm.pizzaPrice },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.pizzaPrice = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    ref: "file",
+                    attrs: { type: "file" },
+                    on: { change: _vm.handleFileUpload }
+                  }),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox" } }),
+                  _vm._v(" "),
+                  _c("br"),
+                  _c("br"),
+                  _vm._v(" "),
+                  _vm.creationError
+                    ? _c(
+                        "div",
+                        { staticClass: "admin-edit__pizza__form_error" },
+                        [_vm._v("Ошибка при редактировании пиццы")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPizza()
+                        }
+                      }
+                    },
+                    [_vm._v("Редактировать")]
                   )
                 ],
                 2

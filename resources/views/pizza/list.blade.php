@@ -26,7 +26,7 @@
 	      <td>{{$pizza->price}} руб.</td>
 	      <td><img width="150" src="{{$pizza->img}}"></td>
 	      <td>
-	      <?php 
+	      <?php
 	      $compositions = json_decode($pizza->composition);
 	      foreach ($compositions as $composition) {
 	      	echo $composition->ingradient;
@@ -34,7 +34,7 @@
 	      }
 	      ?>
 	     	</td>
-	     <td><a href="{{route('pizzaUpdateComponents',$pizza->id)}}" style="color: blue">Редактировать</a></td>
+	     <td><a href="/admin-edit-pizza?id={{$pizza->id}}" style="color: blue">Редактировать</a></td>
 	     <td><a href="{{route('pizzaUpdateComponents',$pizza->id)}}" style="color: blue">Компоненты</a></td>
 	     <td><a class="delete" href="{{route('pizzaDelete',$pizza->id)}}" style="color: red">Удалить</a></td>
 	    </tr>

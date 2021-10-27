@@ -28,6 +28,7 @@ Route::group(['middleware'=>['auth:api', 'role:admin']], function(){
     Route::post('/edit-banner', 'App\Http\Controllers\BannerController@editBanner');
     Route::post('/delete-banner', 'App\Http\Controllers\BannerController@deleteBanner');
     Route::get('/get-orders', 'App\Http\Controllers\OrderController@getOrders');
+    Route::post('/edit-pizza', 'App\Http\Controllers\PizzaController@editPizza');
 });
 
 Route::get('/get-pizza', 'App\Http\Controllers\PizzaController@getPizza');
@@ -45,7 +46,6 @@ Route::get('/get-additions', 'App\Http\Controllers\AdditionController@getAdditio
 Route::post('/get-ingradient-item', 'App\Http\Controllers\AdditionController@IngradientItemByName');
 
 Route::post('/make-order', 'App\Http\Controllers\OrderController@makeOrder');
-
 
 Route::get('/get-banners', 'App\Http\Controllers\BannerController@getBanners');
 

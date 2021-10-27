@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Pizza;
+use Exception;
 use Illuminate\Http\Request;
 
 class PizzaController extends Controller
@@ -11,20 +12,21 @@ class PizzaController extends Controller
         $path = 0;
 
         $name = $request->input("name");
-        
+
         if($request->hasFile('img')){
             $img = $request->file('img');
-            $imageName = time().'1.'.$request->img->extension(); 
+            $imageName = time().'1.'.$request->img->extension();
             $request->file('img')->move(public_path() . '/uploads',$imageName);
             $path = '/uploads/'.$imageName;
         }
-        
+
         $price = $request->input("price");
+        $popular = $request->input("popular");
 
         $possibleAds = json_decode($request->input("possibleAds"));
         $possibleAds = json_encode($possibleAds);
-        
-        
+
+
         // $course = Course::create([
         //     'title' => $title,
         //     'desc'  => $desc,
@@ -32,7 +34,99 @@ class PizzaController extends Controller
         //     'pause' => $pause,
         //     'price' => $price
         // ]);
-        
+
+
+        // $sT = json_decode($request->input("stages_titles"));
+        // $sD = json_decode($request->input("stages_descs"));
+        // $sV = json_decode($request->input("stages_videos"));
+        $ingTitles = json_decode($request->input("ing_titles"));
+        $ingNullable = json_decode($request->input("ing_nullable"));
+        $ingPrice = json_decode($request->input("ing_price"));
+
+        $composition = [];
+
+        for($i = 0; $i < count($ingTitles); $i++){
+            // $composition[$ingTitles[$i]] = $ingNullable[$i];
+            $composition[$i] = [
+                'ingradient' => $ingTitles[$i],
+                'nullable' => $ingNullable[$i],
+                'price' => $ingPrice[$i],
+                'use' => true
+            ];
+        }
+
+        $composition = json_encode($composition);
+
+
+
+        // $stages;
+        // for($i = 0; $i < count($sV); $i++){
+        //     $stages[] = CourseStage::create([
+        //         'title' => $sT[$i],
+        //         'course_id' => $course->id,
+        //         'desc' => $sD[$i],
+        //         'number' => $i+1,
+        //         'video_url' => $sV[$i]
+        //     ]);
+        // }
+
+        try{
+            $pizza = Pizza::create([
+                'name' => $name,
+                'composition'  => $composition,
+                'possibleAds' => $possibleAds,
+                'img'   => $path,
+                'price' => $price,
+                'popular'=> (int) $popular
+            ]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+
+
+
+
+        return [
+                    "status" => true,
+
+                ];
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function editPizza(Request $request){
+
+        $id = $request->input("id");
+        $name = $request->input("name");
+        $pizza = Pizza::where("id",$id)->first();
+        $img = $pizza->img;
+
+        if($pizza->img != $request->img){
+            if($request->hasFile('img')){
+                $img = $request->file('img');
+                $imageName = time().'1.'.$request->img->extension();
+                $request->file('img')->move(public_path() . '/uploads',$imageName);
+                $img = '/uploads/'.$imageName;
+            }
+        }
+
+
+        $price = $request->input("price");
+        $popular = $request->input("popular");
+
+        $possibleAds = json_decode($request->input("possibleAds"));
+        $possibleAds = json_encode($possibleAds);
+
+
+        // $course = Course::create([
+        //     'title' => $title,
+        //     'desc'  => $desc,
+        //     'img'   => $path,
+        //     'pause' => $pause,
+        //     'price' => $price
+        // ]);
+
 
         // $sT = json_decode($request->input("stages_titles"));
         // $sD = json_decode($request->input("stages_descs"));
@@ -55,8 +149,6 @@ class PizzaController extends Controller
 
         $composition = json_encode($composition);
 
-        
-
         // $stages;
         // for($i = 0; $i < count($sV); $i++){
         //     $stages[] = CourseStage::create([
@@ -68,12 +160,13 @@ class PizzaController extends Controller
         //     ]);
         // }
 
-        $pizza = Pizza::create([
+        Pizza::where('id', $id)->update([
             'name' => $name,
             'composition'  => $composition,
             'possibleAds' => $possibleAds,
-            'img'   => $path,
-            'price' => $price
+            'img'   => $img,
+            'price' => $price,
+            'popular' => (int) $popular
         ]);
 
 
@@ -83,6 +176,8 @@ class PizzaController extends Controller
 
                 ];
     }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function getPizza(){
         return Pizza::all();
@@ -114,16 +209,16 @@ class PizzaController extends Controller
         return view('pizza.component', [
             'id' => $id,
             'components' => $components
-        ]); 
+        ]);
     }
-    public function update(Request $request) 
+    public function update(Request $request)
     {
         $pizza = Pizza::where('id',$request->id)->first();
         return view('pizza.update', [
             'pizza' => $pizza
         ]);
     }
-    public function updatePost(Request $request) 
+    public function updatePost(Request $request)
     {
         $pizza = Pizza::where('id',$request->id)->first();
         return redirect()->route('pizzaList');

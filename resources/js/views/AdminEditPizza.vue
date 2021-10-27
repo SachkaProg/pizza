@@ -2,11 +2,11 @@
     <div class="pizza">
         <div class="container">
             <h3 class="h-heading">
-                Создание пиццы
+                Редактирование пиццы
             </h3>
             <div class="pizza new__inner">
 
-                <form class="admin-create__pizza__form"  v-if="refreshPage == false" >
+                <form class="admin-edit__pizza__form"  v-if="refreshPage == false" >
                     <input v-model="pizzaName" type="text" name="name" placeholder="Название">
 
                     <h2>Инградиенты</h2>
@@ -16,7 +16,7 @@
                         <button class="number-plus" type="button" @click="stepUpStage">+</button>
                     </div>
 
-                    <div class="admin-create__pizza__composition" v-for="i in newIngradients" v-bind:key="i">
+                    <div class="admin-edit__pizza__composition" v-for="i in newIngradients" v-bind:key="i">
                         <input v-model="ingradientsTitles[i-1]" type="text" name="ingradient" placeholder="Инградиент">
                         Можно убрать <input v-model="ingradientsNullable[i-1]" type="checkbox" name="nullable">
                         <input v-model="ingradientsPrice[i-1]" type="text" name="ing_price" placeholder="Цена инградиента">
@@ -28,7 +28,7 @@
                         <div class="pizza__pop-up__ingradients-list adm-add-list">
 
 
-                            <div v-for="(add,index) in additions" :key="index" class="pizza__pop-up__ingradients-item" @click="addAdditionToPizza(add.name, $event)">
+                            <div v-for="(add,index) in additions" :key="index" :additionname="add.name" class="pizza__pop-up__ingradients-item" @click="addAdditionToPizza(add.name, $event)">
                                 <div class="pizza__pop-up__ingradients-item__img">
                                     <img :src="add.img" alt="" class="pizza__pop-up__ingradients-item__img-img">
                                 </div>
@@ -48,8 +48,8 @@
                     <input @change="handleFileUpload" ref="file" type="file">
                     <input type="checkbox" >
                     <br><br>
-                    <div v-if="creationError" class="admin-create__pizza__form_error">Ошибка при создании пиццы</div>
-                    <button type="button" @click="createPizza()" >Создать</button>
+                    <div v-if="creationError" class="admin-edit__pizza__form_error">Ошибка при редактировании пиццы</div>
+                    <button type="button" @click="editPizza()" >Редактировать</button>
                 </form>
 
             </div>
@@ -99,7 +99,7 @@
 
 </template>
 
-<script>
+<script> //////////////////////////////////////////////////////////////                  $route.params.id
 import axios from 'axios'
 import PizzaItem from '../components/PizzaItem.vue'
 
@@ -157,9 +157,10 @@ export default {
             this.refresh();
         },
 
-        createPizza(){
+        editPizza(){
 
             let formData = new FormData();
+            formData.append('id', this.pizza.id);
             formData.append('name', this.pizzaName);
 
             formData.append('img', this.file);
@@ -178,7 +179,7 @@ export default {
             formData.append('ing_titles',JSON.stringify(this.ingradientsTitles));
             formData.append('ing_nullable',JSON.stringify(this.ingradientsNullable));
 
-            axios.post('api/create-pizza', formData, {
+            axios.post('api/edit-pizza', formData, {
                 headers: {
                     'Authorization': 'Bearer '+ window.Laravel.api_token,
                     "Content-type": "multi-part/form-data"
@@ -187,7 +188,6 @@ export default {
                 console.log(res.data);
                 window.location.href="/admin";
             }).catch(err=>{
-
                 this.creationError = true;
             });
 
@@ -231,13 +231,28 @@ export default {
                 console.log(res.data);
                 console.log(this.pizzas);
 
-                    this.pizzas.forEach((el)=>{
-                        el.composition = JSON.parse(el.composition);
-                        el.created_at = this.getDate(+Date.parse(el.created_at));
-                        el.created_date = new Date(+Date.parse(el.created_at));
-                    });
+                this.pizzas.forEach((el)=>{
+                    el.composition = JSON.parse(el.composition);
+                    el.created_at = this.getDate(+Date.parse(el.created_at));
+                    el.created_date = new Date(+Date.parse(el.created_at));
+                });
 
-                console.log(this.pizzas);
+                let id = new URL(window.location.href).searchParams.get("id");
+                this.pizza = this.pizzas.find((p)=>p.id == id);
+
+                console.log(this.pizza);
+
+                this.pizzaName = this.pizza.name;
+                this.pizzaPrice = this.pizza.price;
+                this.popular = this.pizza.popular;
+                this.pizzaPossibleAdds = JSON.parse(this.pizza.possibleAds);
+                this.ingradientsNumber = this.pizza.composition.length;
+                this.addStages();
+                for(let i = 0; i < this.ingradientsNumber; ++i){
+                    this.ingradientsTitles[i] = this.pizza.composition[i].ingradient;
+                    this.ingradientsNullable[i] = +this.pizza.composition[i].nullable;
+                    this.ingradientsPrice[i] = this.pizza.composition[i].price;
+                }
             })
         },
 
@@ -247,6 +262,11 @@ export default {
 
                 this.additions = res.data;
 
+                setTimeout(()=>{
+                    this.pizzaPossibleAdds.forEach(el=>{
+                    document.querySelector(`[additionname="${el}"]`).classList.add('active');
+                })
+                },10)
 
                 console.log(this.additions);
             })
@@ -274,7 +294,7 @@ export default {
 </script>
 
 <style scoped>
-    .admin-create__pizza__form{
+    .admin-edit__pizza__form{
         margin-bottom: 100px;
     }
 
@@ -282,7 +302,7 @@ export default {
         border: 2px solid green;
     }
 
-    .admin-create__pizza__form_error{
+    .admin-edit__pizza__form_error{
         color:red;
         font-weight: bold;
     }

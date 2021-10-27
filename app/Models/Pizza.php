@@ -14,5 +14,6 @@ class Pizza extends Model
         'possibleAds',
         'price',
         'img',
+        'popular'
     ];
 }
