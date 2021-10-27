@@ -253,6 +253,7 @@ export default {
         flex-direction: column;
         align-items: center;
         height: 100px;
+        margin: 50px;
     }
 
     .banners__list-item-i{

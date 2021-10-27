@@ -96,6 +96,51 @@ class PizzaController extends Controller
     }
 
     public function delete(Request $request) {
+        $pizza = Pizza::where('id', $request->id)->delete();
+        return redirect()->back();
+    }
+    public function updateComponents(Request $request) {
+        $id = $request->id;
+        $pizza = Pizza::where('id', $id)->first();
+        $components = json_decode($pizza->components,true);
+        if (empty($components)) {
+            $components['comp1'] = '';
+            $components['comp2'] = '';
+            $components['comp3'] = '';
+            $components['comp4'] = '';
+            $components['comp5'] = '';
+            $components['comp6'] = '';
+        }
+        return view('pizza.component', [
+            'id' => $id,
+            'components' => $components
+        ]); 
+    }
+    public function update(Request $request) 
+    {
+        $pizza = Pizza::where('id',$request->id)->first();
+        return view('pizza.update', [
+            'pizza' => $pizza
+        ]);
+    }
+    public function updatePost(Request $request) 
+    {
+        $pizza = Pizza::where('id',$request->id)->first();
+        return redirect()->route('pizzaList');
+    }
+    public function updateComponentsPost(Request $request) {
+        $id = $request->id;
+        $comp['comp1'] = $request->comp1;
+        $comp['comp2'] = $request->comp2;
+        $comp['comp3'] = $request->comp3;
+        $comp['comp4'] = $request->comp4;
+        $comp['comp5'] = $request->comp5;
+        $comp['comp6'] = $request->comp6;
+        $components = json_encode($comp);
+        // print_r($components);
+        Pizza::where('id', $id)->update([
+            'components' => $components
+        ]);
         return redirect()->back();
     }
 }

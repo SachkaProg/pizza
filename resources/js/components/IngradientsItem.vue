@@ -3,7 +3,7 @@
     <div class="pizza__pop-up__ingradients-item">
 
         <div class="pizza__pop-up__ingradients-item__img">
-            <img :src="ingradient_item.img" alt="" class="pizza__pop-up__ingradients-item__img-img">
+            <img style="width: 30px !important" :src="ingradient_item.img" alt="" class="pizza__pop-up__ingradients-item__img-img">
         </div>
 
         <div class="pizza__pop-up__ingradients-item__name">
@@ -96,7 +96,10 @@ export default {
         display: none;
         
     }
-
+    .pizza__pop-up__ingradients-item__img img {
+        width: 30px !important;
+        hieght: 30px;
+    }
 </style>
 
 

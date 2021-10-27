@@ -30,37 +30,37 @@
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Энерг. ценность</p>
-                                    <p>276,3 ккал</p>
+                                    <p>{{pizza_data.components.comp1}}</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__proteins
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Белки</p>
-                                    <p>9,8 г</p>
+                                    <p>1231</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__fats
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Жиры</p>
-                                    <p>10,1 г</p>
+                                    <p>123</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__carbonhydrates
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Углеводы</p>
-                                    <p>34,8 г</p>
+                                    <p>123</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__weight
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Вес</p>
-                                    <p>450 г</p>
+                                    <p>123</p>
                                 </div>
                                 <div class="pizza__pop-up__info-nutritive__content__diameter
                                 pizza__pop-up__info-nutritive__content__block
                                 ">
                                     <p>Диаметр</p>
-                                    <p>30 см</p>
+                                    <p>123</p>
                                 </div>
                             </div>
                         </div>
@@ -153,6 +153,7 @@ export default {
             price: 0,
             img: '',
             composition: [],
+            comp: [],
             additions: [],
             deletedAdditives: [],
             quantity: 1,

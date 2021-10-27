@@ -3,7 +3,7 @@
 
 @section('content')
 	<a href="/admin-create-pizza">
-	<button type="btn btn-primary">Создать пиццу</button>
+	<button style="margin: 5px;" class="btn btn-primary">Создать пиццу</button>
 	</a>
 	<h2>Добавить категорию</h2>
 	<form></form>
@@ -13,6 +13,8 @@
 	      <th>Название</th>
 	      <th>Цена</th>
 	      <th>Фото</th>
+	      <th>Компоненты</th>
+	      <th>Редактировать</th>
 	      <th>Компоненты</th>
 	      <th>Удалить</th>
 	    </tr>
@@ -32,9 +34,23 @@
 	      }
 	      ?>
 	     	</td>
-	     <td><a href="{{route('pizzaDelete',$pizza->id)}}" style="color: red">Удалить</a></td>
+	     <td><a href="{{route('pizzaUpdateComponents',$pizza->id)}}" style="color: blue">Редактировать</a></td>
+	     <td><a href="{{route('pizzaUpdateComponents',$pizza->id)}}" style="color: blue">Компоненты</a></td>
+	     <td><a class="delete" href="{{route('pizzaDelete',$pizza->id)}}" style="color: red">Удалить</a></td>
 	    </tr>
 	    @endforeach
 	  </tbody>
 	</table>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('body .delete').on('click', function (event) {
+				event.preventDefault();
+				let isDelete = confirm("Вы уверены, что хотите удалить?");
+
+				if (isDelete) {
+					location.href = $(this).attr('href');
+				}
+			})
+		})
+	</script>
 @endsection

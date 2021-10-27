@@ -47,6 +47,8 @@ export default {
                     this.pizzas.forEach((el)=>{
                         el.composition = JSON.parse(el.composition);
                         el.possibleAds = JSON.parse(el.possibleAds);
+                        el.components = JSON.parse(el.components);
+                        console.log(el.components.comp1);
                         el.created_at = this.getDate(+Date.parse(el.created_at));
                         el.created_date = new Date(+Date.parse(el.created_at));
                     });

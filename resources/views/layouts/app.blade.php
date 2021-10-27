@@ -15,7 +15,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -46,16 +46,19 @@
                                     <a class="nav-link" href="{{ route('goodsList') }}">Товары</a>
                             </li>
                             <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('goodsList') }}">Категории</a>
+                                    <a class="nav-link" href="{{ route('categoryList') }}">Категории</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin-create-addition">Добавки</a>
+                                <a class="nav-link" href="{{ route('addList') }}">Добавки</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin-banners">Банеры</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin-orders">Заказы</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('soucesList') }}">Соусы</a>
                             </li>
                         <!-- Authentication Links -->
                         @guest
