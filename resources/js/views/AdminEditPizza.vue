@@ -159,14 +159,18 @@ export default {
 
         editPizza(){
 
+            console.log(this.popular);
+
             let formData = new FormData();
             formData.append('id', this.pizza.id);
             formData.append('name', this.pizzaName);
-
+            //return;
             formData.append('img', this.file);
 
             formData.append('price', this.pizzaPrice);
 
+            if(this.popular) this.popular = 1;
+            else this.popular = 0;
             formData.append('popular', this.popular);
 
             this.ingradientsPrice = this.ingradientsPrice.map((i)=>(i? i: null));

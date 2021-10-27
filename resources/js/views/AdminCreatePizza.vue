@@ -166,6 +166,8 @@ export default {
 
             formData.append('price', this.pizzaPrice);
 
+            if(this.popular) this.popular = 1;
+            else this.popular = 0;
             formData.append('popular', this.popular);
 
             this.ingradientsPrice = this.ingradientsPrice.map((i)=>(i? i: null));

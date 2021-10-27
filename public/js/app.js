@@ -4471,6 +4471,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       formData.append('name', this.pizzaName);
       formData.append('img', this.file);
       formData.append('price', this.pizzaPrice);
+      if (this.popular) this.popular = 1;else this.popular = 0;
       formData.append('popular', this.popular);
       this.ingradientsPrice = this.ingradientsPrice.map(function (i) {
         return i ? i : null;
@@ -4751,11 +4752,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     editPizza: function editPizza() {
       var _this = this;
 
+      console.log(this.popular);
       var formData = new FormData();
       formData.append('id', this.pizza.id);
-      formData.append('name', this.pizzaName);
+      formData.append('name', this.pizzaName); //return;
+
       formData.append('img', this.file);
       formData.append('price', this.pizzaPrice);
+      if (this.popular) this.popular = 1;else this.popular = 0;
       formData.append('popular', this.popular);
       this.ingradientsPrice = this.ingradientsPrice.map(function (i) {
         return i ? i : null;

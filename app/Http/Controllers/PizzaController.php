@@ -113,7 +113,7 @@ class PizzaController extends Controller
 
 
         $price = $request->input("price");
-        $popular = $request->input("popular");
+        $popular = (int) $request->input("popular");
 
         $possibleAds = json_decode($request->input("possibleAds"));
         $possibleAds = json_encode($possibleAds);
@@ -165,8 +165,8 @@ class PizzaController extends Controller
             'composition'  => $composition,
             'possibleAds' => $possibleAds,
             'img'   => $img,
-            'price' => $price,
-            'popular' => (int) $popular
+            'popular' => $popular,
+            'price' => $price
         ]);
 
 
